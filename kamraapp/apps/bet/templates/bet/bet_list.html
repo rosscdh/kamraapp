@@ -1,0 +1,11 @@
+{% extends 'bet/base.html' %}
+
+{% block content %}
+<ul>
+  {% for bet in object_list %}
+  <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
+  {% empty %}
+  <li><a href="{% url 'bet:create' %}">New source of Karma</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

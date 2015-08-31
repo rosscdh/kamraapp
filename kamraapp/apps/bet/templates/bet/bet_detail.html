@@ -1,0 +1,22 @@
+{% extends 'bet/base.html' %}
+
+{% block content %}
+<a href="{% url 'bet:edit' slug=bet.slug %}">edit</a>
+<h1>{{ bet.name }}<br/><small>Donation recipient: {{ bet.recipient }}</small></h1>
+<p>{{ bet.description }}</p>
+
+
+<div>
+<h3>Facebook - Copy &amp; Paste form</h3>
+<form>
+  {{ facebook_share_form }}
+</form>
+</div>
+
+<div>
+<h3>Twitter - Copy &amp; Paste form</h3>
+<form>
+  {{ twitter_share_form }}
+</form>
+</div>
+{% endblock %}
