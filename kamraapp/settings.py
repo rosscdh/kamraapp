@@ -46,6 +46,7 @@ APPLICATION_APPS = (
 
 HELPER_APPS = (
     'pipeline',
+    'formtools',
     'corsheaders',
     'djangobower',
     'crispy_forms',
