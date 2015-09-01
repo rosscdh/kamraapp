@@ -7,9 +7,12 @@ from .models import Bet
 
 
 class BetForm(forms.ModelForm):
+    name = forms.CharField(label='I swear that I will:')
+    description = forms.CharField(label='A more detailed examination of the commitment:', widget=forms.Textarea)
+
     class Meta:
         model = Bet
-        exclude = ('slug', 'uuid', 'created_at', 'updated_at')
+        exclude = ('slug', 'uuid', 'parent_bet_id', 'created_at', 'updated_at')
 
     # @property
     # def helper(self):

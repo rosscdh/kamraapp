@@ -44,3 +44,10 @@ class BetFormView(UpdateView):
     model = Bet
     form_class = BetForm
     template_name = 'bet/bet_form.html'
+
+
+class CounterBetFormView(BetFormView):
+    def get_initial(self):
+        initial = super(CounterBetFormView, self).get_initial()
+        initial.update({'parent_bet': self.get_object()})
+        return initial
