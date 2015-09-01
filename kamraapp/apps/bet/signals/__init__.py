@@ -2,4 +2,4 @@
 import django.dispatch
 
 
-add_bet_log = django.dispatch.Signal(providing_args=['user', 'instance', 'status'])
+log_bet_event = django.dispatch.Signal(providing_args=['user', 'instance', 'status'])
