@@ -1,6 +1,8 @@
-{% extends 'bet/base.html' %}{% load staticfiles %}
+{% extends 'bet/base.html' %}{% load staticfiles pipeline %}
 
-{% block css_header %}{% endblock %}
+{% block css_header %}
+{% stylesheet 'dashboard' %}
+{% endblock %}
 
 {% block content %}
 <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
@@ -10,5 +12,11 @@
 {% endblock %}
 
 {% block javascript_footer %}
+{% javascript 'dashboard' %}
 {{ form.media }}
+<script>
+$( document ).ready(function() {
+});
+</script>
+
 {% endblock %}

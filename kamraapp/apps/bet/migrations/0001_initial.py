@@ -18,10 +18,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('access_token', models.CharField(default=b'bec09c4e-01e4-40e2-94a4-b703d2cbe155', max_length=255)),
-                ('access_secret', models.CharField(default=b'22c68107-ffdf-44c5-b819-7b642b282f2b', max_length=255)),
+                ('access_token', models.CharField(default=b'6fe7275a-db43-493d-89a0-6872f8d59d34', max_length=255)),
+                ('access_secret', models.CharField(default=b'd9857f9f-91ef-46b4-ba85-abc08bd9d5b7', max_length=255)),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
+                ('sub_bet_type', models.CharField(blank=True, max_length=24, null=True, choices=[(b'parent', b'Parent'), (b'clone', b'Clone'), (b'bet_for', b'For'), (b'bet_against', b'Against')])),
                 ('expires_at', models.DateTimeField(default=kamraapp.apps.bet.models._default_expiry)),
                 ('created_at', models.DateTimeField(auto_now=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
@@ -33,7 +34,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('uuid', models.CharField(default=b'cc8a6f52-c902-4e50-8910-3dcf7ac30ed5', max_length=255)),
+                ('uuid', models.CharField(default=b'6ad72929-acd9-4a9f-9c2d-01f60e93a8ec', max_length=255)),
                 ('url', models.URLField()),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
@@ -62,6 +63,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='bet',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
         ),
     ]

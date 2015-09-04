@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import CreateView, UpdateView, ListView, DetailView
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from django.shortcuts import render_to_response
+from django.views.generic import UpdateView, ListView, DetailView
+
+from formtools.wizard.views import SessionWizardView
 
 from .models import Bet
-from .forms import BetForm, ShareForm
+from .forms import BetFormStep1, BetFormStep2, ShareForm
 
 
 class BetListView(ListView):
@@ -12,15 +16,30 @@ class BetListView(ListView):
     model = Bet
 
 
-class BetCreateView(CreateView):
+class BetCreateView(SessionWizardView):
     """
     """
-    model = Bet
-    form_class = BetForm
+    TEMPLATES = {
+        '0': 'bet/bet_form_with_donation_recipients.html'
+    }
+    form_list = [BetFormStep1, BetFormStep2]
     template_name = 'bet/bet_form.html'
 
-    def get_success_url(self, *args, **kwargs):
-        return reverse('bet:detail', kwargs={'slug': self.object.slug})
+    def get_template_names(self):
+        try:
+            return [self.TEMPLATES[self.steps.current]]
+        except:
+            return self.template_name
+
+    def done(self, form_list, form_dict, **kwargs):
+        bet, is_new = form_dict['0'].save()
+        user, is_new = form_dict['1'].save()
+
+        # save the user associated with this bet
+        bet.user = user
+        bet.save(update_fields=['user'])
+
+        return redirect(reverse('bet:detail', kwargs={'slug': bet.slug}))
 
 
 class BetDetailView(DetailView):
@@ -42,7 +61,7 @@ class BetFormView(UpdateView):
     """
     """
     model = Bet
-    form_class = BetForm
+    form_class = BetFormStep1
     template_name = 'bet/bet_form.html'
 
 

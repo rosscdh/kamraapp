@@ -3,6 +3,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
+from . import SUB_BET_TYPE
+
 import os
 import uuid
 import datetime
@@ -20,8 +22,10 @@ class Bet(models.Model):
     """
     Primary bet object, can ahve sub and counter bets
     """
+    SUB_BET_TYPE = SUB_BET_TYPE
+
     slug = models.SlugField()
-    user = models.ForeignKey('auth.User')
+    user = models.ForeignKey('auth.User', null=True, blank=True)
 
     # oath2 style token and secret to encode keys used in the urls that are pasted
     access_token = models.CharField(default=temp_uuid_gen(), max_length=255)
@@ -34,6 +38,10 @@ class Bet(models.Model):
     proofs = models.ManyToManyField('bet.Proof')
 
     parent_bet = models.ForeignKey('bet.Bet', null=True, blank=True)
+    sub_bet_type = models.CharField(max_length=24,
+                                    choices=SUB_BET_TYPE.get_choices(),
+                                    null=True,
+                                    blank=True)
 
     expires_at = models.DateTimeField(default=_default_expiry)
 

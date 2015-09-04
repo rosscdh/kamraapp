@@ -134,21 +134,16 @@ STATICFILES_FINDERS = (
 BOWER_COMPONENTS_ROOT = BASE_DIR
 
 STATICFILES_DIRS = (
-    BOWER_COMPONENTS_ROOT,
+    BOWER_COMPONENTS_ROOT + '/bower_components',
 )
 
 BOWER_INSTALLED_APPS = (
     'angularjs',
-    'angular-osm',
-    'angular-chart.js',
     'angular-resource',
     'angular-ui-router',
     'angular-moment',
     'moment',
     'angular-loading-bar',
-    'angular-rangeslider',
-    'angular-daterangepicker',
-    'bootstrap-daterangepicker',
 )
 
 PIPELINE_JS = {
@@ -166,21 +161,6 @@ PIPELINE_JS = {
             'angular-moment/angular-moment.js',
             # loading bar
             'angular-loading-bar/build/loading-bar.js',
-            # range slider
-            #'angular-rangeslider/angular.rangeSlider.js',
-            # daterange picker
-            'bootstrap-daterangepicker/daterangepicker.js',
-            'angular-daterangepicker/js/angular-daterangepicker.js',
-            # charts
-            'Chart.js/Chart.js',
-            'angular-chart.js/dist/angular-chart.js',
-            # osm
-            'angular-osm/dist/osm.js',
-            'angular-base64/angular-base64.js'
-            'ngstorage/ngStorage.js.js'
-            'osmtogeojson/osmtogeojson.js',
-            # The dashboard app
-            'js/dashboard.app.js',
         ),
         'output_filename': 'js/dashboard.js',
     },
@@ -190,13 +170,8 @@ PIPELINE_CSS = {
     'dashboard': {
         'source_filenames': (
             'bootstrap/dist/css/bootstrap.css',
-            # chart
-            'angular-chart.js/dist/angular-chart.css',
             # loading bar
             'angular-loading-bar/build/loading-bar.css',
-            # range slider
-            #'angular-rangeslider/angular.rangeSlider.css',
-            'bootstrap-daterangepicker/daterangepicker.css',
         ),
         'output_filename': 'css/dashboard.css',
     },
