@@ -50,7 +50,7 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
         }
 
     def get_short_description(self, obj):
-        return truncatewords_html(obj.description, 25)
+        return truncatewords_html(obj.description, 15)
 
 
 

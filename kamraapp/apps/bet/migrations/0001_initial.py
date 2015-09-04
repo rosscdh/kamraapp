@@ -19,10 +19,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('access_token', models.CharField(default=b'3b2c8855-e597-4773-81c4-06bebdd31966', max_length=255)),
-                ('access_secret', models.CharField(default=b'a511caa3-5a95-4b95-8559-3541d9e10416', max_length=255)),
+                ('access_token', models.CharField(default=b'1392a49f-0d57-425a-8423-d20bfc9a8299', max_length=255)),
+                ('access_secret', models.CharField(default=b'75653fdf-7e4d-4712-895d-f8d63b4ae0b8', max_length=255)),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
+                ('amount', models.IntegerField(default=5.0, null=True, blank=True)),
                 ('sub_bet_type', models.CharField(blank=True, max_length=24, null=True, choices=[(b'parent', b'Parent'), (b'clone', b'Clone'), (b'bet_for', b'For'), (b'bet_against', b'Against')])),
                 ('data', jsonfield.fields.JSONField(default={})),
                 ('expires_at', models.DateTimeField(default=kamraapp.apps.bet.models._default_expiry)),
@@ -36,7 +37,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('uuid', models.CharField(default=b'd00c822a-8e5e-4a53-a3fa-9d3c0db52ca0', max_length=255)),
+                ('uuid', models.CharField(default=b'3c08d669-dd8a-4531-9a8d-44749be07432', max_length=255)),
                 ('url', models.URLField()),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),

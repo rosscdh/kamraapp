@@ -31,7 +31,7 @@ def _get_unique_username(username):
 class BetFormStart(forms.Form):
     name = forms.CharField(label='I swear that I will:')
     description = forms.CharField(label='A more detailed examination of the commitment:', widget=forms.Textarea)
-
+    amount = forms.FloatField(initial=5.00)
     donation_recipient = forms.IntegerField(required=False, widget=forms.HiddenInput)
 
     class Media:
@@ -58,6 +58,7 @@ class BetFormStart(forms.Form):
         obj = Bet(
             name=self.cleaned_data['name'],
             description=self.cleaned_data['description'],
+            amount=self.cleaned_data['amount'],
         )
         obj.save()
         is_new = True
