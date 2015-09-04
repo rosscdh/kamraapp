@@ -1,7 +1,7 @@
 from __future__ import with_statement
 from fabric.api import *
 from fabric.contrib import files
-
+from fabric.contrib.project import rsync_project
 #from fab_deploy import crontab
 
 from git import *
@@ -26,7 +26,7 @@ except:
     env.repo = None
 
 
-env.project = 'catmap'
+env.project = 'kamraapp'
 env.celery_app_name = 'current'
 
 env.disable_known_hosts = True
@@ -43,7 +43,7 @@ env.environment = 'local'
 env.environment_class = 'development'
 env.key_filename = '~/.ssh/kumukan.pem'
 
-env.virtualenv_path = '~/.virtualenvs/catmap/'
+env.virtualenv_path = '~/.virtualenvs/kamraapp/'
 env.current_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
 
 env.newrelic_api_token = None
@@ -70,13 +70,13 @@ def staging():
     env.environment_class = 'staging'
     env.newrelic_app_name = 'CatMap Staging'
 
-    env.remote_project_path = '/home/ubuntu/apps/catmap/'
+    env.remote_project_path = '/home/ubuntu/apps/kamraapp/'
     env.deploy_archive_path = '/home/ubuntu/apps/'
-    env.virtualenv_path = '/home/ubuntu/.virtualenvs/catmap/'
+    env.virtualenv_path = '/home/ubuntu/.virtualenvs/kamraapp/'
     env.remote_dashboard_path = None
 
-    env.start_service = 'supervisorctl start catmap'
-    env.stop_service = 'supervisorctl stop catmap'
+    env.start_service = 'supervisorctl start kamraapp'
+    env.stop_service = 'supervisorctl stop kamraapp'
     env.start_worker = None
     env.stop_worker = None
 
@@ -91,17 +91,17 @@ def staging():
 def mkvirtualenv():
     if not files.exists(env.virtualenv_path):
         run('mkvirtualenv %s' % env.project)
-    run('workon %s' % 'current')
+    run('workon %s' % env.project)
 
 @task
 def put_confs():
     #sudo('rm /etc/nginx/sites-enabled/default')
     # nginx
-    put(local_path='./config/environments/{environment}/catmap-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/kamraapp-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
     # supervisord
-    put(local_path='./config/environments/{environment}/catmap.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/kamraapp.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
     # uwsgi
-    put(local_path='./config/environments/{environment}/catmap.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/kamraapp.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
 
 
 @task
@@ -395,7 +395,7 @@ def set_code_version():
     version_path = '%sversions' % env.remote_project_path
     full_version_path = '%s/%s' % (version_path, env.SHA1_FILENAME)
 
-    cmd = 'echo "CODE_VERSION=\'%s\'" > catmap/settings/code_version.py' % env.SHA1_FILENAME
+    cmd = 'echo "CODE_VERSION=\'%s\'" > kamraapp/settings/code_version.py' % env.SHA1_FILENAME
 
     with cd(full_version_path):
         if env.environment in ['local']:
@@ -426,10 +426,12 @@ def fixtures():
 
 @task
 def assets():
+    local('rm -Rf ./static')
     # collect static components
     local('python ./manage.py collectstatic --noinput')
     #put('./static/*', '/home/ubuntu/apps/catmap/static/')
-    rsync_project(local_dir=source_path, remote_dir=target_path, exclude='.git')
+    #local('tar cvzf static.tar.gz ./static')
+    rsync_project(local_dir='./static', remote_dir='%sstatic' % env.remote_project_path, exclude='.git')
 
 @task
 def requirements():
@@ -563,17 +565,17 @@ def add_user():
 
 @task
 def paths():
-    run('echo "WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.bash_profile')
-    run('echo "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bash_profile')
-    run('echo "source $HOME/.bash_profile" >> $HOME/.bashrc')
+    # run('echo "WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.bash_profile')
+    # run('echo "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bash_profile')
+    # run('echo "source $HOME/.bash_profile" >> $HOME/.bashrc')
     run('mkdir -p ~/.virtualenvs')
-    run('mkdir -p ~/apps/catmap/versions/tmp')
-    run('ln -s ~/apps/catmap/versions/tmp ~/apps/catmap/current')
+    run('mkdir -p ~/apps/kamraapp/versions/tmp')
+    run('ln -s ~/apps/kamraapp/versions/tmp ~/apps/kamraapp/current')
     # pass
 
 @task
 def upload_db():
-    put('db.sqlite3', '/home/ubuntu/apps/catmap/')
+    put('db.sqlite3', '/home/ubuntu/apps/kamraapp/')
 #-------
 
 @task
