@@ -26,7 +26,7 @@ SECRET_KEY = '9!ceu3zg_jrqqkccn+ilfd!t^kfjsk-hg#!a+ii^ue-oi$+gd8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,10 +131,12 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
 BOWER_COMPONENTS_ROOT = BASE_DIR
 
 STATICFILES_DIRS = (
-    BOWER_COMPONENTS_ROOT + '/bower_components',
+    os.path.join(BOWER_COMPONENTS_ROOT, 'bower_components'),
 )
 
 BOWER_INSTALLED_APPS = (
@@ -189,6 +191,9 @@ PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
 
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.jsmin.JSMinCompressor'
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSMinCompressor'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
@@ -212,6 +217,15 @@ REST_FRAMEWORK = {
 REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 2
 }
+
+DJANGO_ENV = os.getenv('DJANGO_ENV', os.getenv('RAILS_ENV', 'development'))
+
+try:
+    env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/kamraapp/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
+    environment_settings = open(env_path)
+    exec(environment_settings)
+except Exception as e:
+    pass
 
 try:
     from .local_settings import *

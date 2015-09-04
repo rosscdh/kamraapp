@@ -597,8 +597,8 @@ def deploy(is_predeploy='False',full='False',db='False',search='False'):
 
     requirements()
 
-    relink()
     update_env_conf()
+    relink()
     assets()
     clean_start()
     #crontabs()
