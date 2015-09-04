@@ -9,10 +9,17 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
+    #provider_links = serializers.SerializerMethodField()
 
     class Meta:
         model = DonationRecipient
         exclude = ('data',)
+
+    def get_provider_links(self, obj):
+        links = {}
+        for link in self.data.get('links', []):
+            links[link.get('rel')] = link.get('href')
+        return links
 
     def get_picture(self, obj):
         try:

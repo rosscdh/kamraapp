@@ -1,22 +1,62 @@
 {% extends 'bet/base.html' %}
 
+{% block title %}{{ bet.user.first_name }} commits to {{ bet.name }} - KarmApp{% endblock %}
+
+{% block head %}
+  <!-- SocialSharing -->
+  <meta name="description" content="{{ bet.user.first_name }} commits to {{ bet.name }}">
+  <meta name="keywords" content="">
+  <meta property="og:title" content="{{ bet.user.first_name }} commits to {{ bet.name }}" />
+  <meta property="og:description" content="{{ bet.description }}" />
+  <meta property="og:image" content="" />
+{% endblock %}
+
 {% block content %}
-<a href="{% url 'bet:edit' slug=bet.slug %}">edit</a>
-<h1>{{ bet.name }}<br/><small>Donation recipient: {{ bet.recipient }}</small></h1>
-<p>{{ bet.description }}</p>
+<a href="{% url 'bet:edit' slug=bet.slug %}" class="btn btn-primary pull-right">edit</a>
+<div class="row">
+  <div class="col-md-7">
+    I, known as "{{ bet.user.first_name }}" swear I will try to "{{ bet.name }}"
+    <p>{{ bet.description }}</p>
+  </div>
+  <div class="col-md-5">
+    <a href="" class="btn btn-success">Bet for</a>
+    <a href="" class="btn btn-danger">Bet against</a>
+    <a href="" class="btn btn-warning">I also want to do this bet</a>
+  </div>
+</div>
 
+<hr/>
 
+<h2>Donation Recipient</h2>
+{% for recipient in donation_recipients %}
+<div class="media">
+  <div class="media-left media-top">
+    <a href="#">
+      <img class="media-object img-rounded" src="{{ recipient.picture }}" alt="{{ recipient.name }}" />
+      <a href="{{ recipient.url }}" class="btn btn-warning">More Info</a>
+      <a href="{{ recipient.url }}" class="btn btn-success">Donate</a>
+    </a>
+  </div>
+  <div class="media-body">
+      <h4 class="media-heading">{{ recipient.name }}</h4>
+      <span>{{ recipient.description|safe }}</span>
+  </div>
+</div>
+{% endfor %}
+
+<hr/>
+<h2>Social Sharing</h2>
 <div>
-<h3>Facebook - Copy &amp; Paste form</h3>
-<form>
-  {{ facebook_share_form }}
-</form>
+  <h4>Facebook - Copy &amp; Paste form</h4>
+  <form>
+    {{ facebook_share_form }}
+  </form>
 </div>
 
 <div>
-<h3>Twitter - Copy &amp; Paste form</h3>
-<form>
-  {{ twitter_share_form }}
-</form>
+  <h4>Twitter - Copy &amp; Paste form</h4>
+  <form>
+    {{ twitter_share_form }}
+  </form>
 </div>
 {% endblock %}

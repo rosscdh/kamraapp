@@ -206,7 +206,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_FILTER_BACKENDS': (
     #     'rest_framework.filters.DjangoFilterBackend',
     # ),
-    'PAGINATE_BY': 25
+    'PAGINATE_BY': 5
 }
 
 REST_FRAMEWORK_EXTENSIONS = {

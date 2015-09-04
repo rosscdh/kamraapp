@@ -5,16 +5,19 @@
 {% endblock %}
 
 {% block content %}
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 <div class="row" ng-app="ProjectListApp">
   <div class="col-md-6">
-
+    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
     <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" name="">Submit</button>
+      {{ wizard.management_form }}
+      {{ wizard.form.as_p }}
+      <button class="btn btn-primary" type="submit" name="">Continue</button>
     </form>
 
     {% verbatim %}
     <div ng-controller="SelectedProjectController">
+      <div class="loading" ng-hide="project">Select a project on the right, or simply continue</div>
       <div class="media" ng-show="project">
         <div class="media-left media-middle">
           <a href="#">
@@ -25,6 +28,7 @@
             <h4 class="media-heading">{{ project.name }}</h4>
         </div>
       </div>
+      <a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Not this Project</a>
     </div>
     {% endverbatim %}
 
@@ -34,6 +38,11 @@
     {% verbatim %}
     <div ng-controller="ProjectListController">
       <div class="loading" ng-show="projects.length==0">Please wait...</div>
+
+      <div class="well">
+        <a ng-show="previous_page" href="#" ng-click="go(previous_page)">previous</a>
+        <a ng-show="next_page" href="#" ng-click="go(next_page)">next</a>
+      </div>
 
       <div class="media" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)" ng-style="{cursor: 'pointer'}">
         <div class="media-left media-top">

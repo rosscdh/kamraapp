@@ -53,5 +53,10 @@ class Command(BaseCommand):
                 recipient.name = name
                 recipient.description = description
                 recipient.url = url
+                item.update({
+                    'meta': {
+                        'provider': 'betterplace'
+                    }
+                })
                 recipient.data = item
                 recipient.save()

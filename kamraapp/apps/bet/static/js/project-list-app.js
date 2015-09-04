@@ -33,10 +33,20 @@ app.controller("ProjectListController", [
             ProjectListService.selected_project(project);
         };
 
+        $scope.go = function (url) {
+            ProjectListService.go(url).then(function success (data) {
+                $scope.projects = data.results;
+                $scope.next_page = data.next;
+                $scope.previous_page = data.previous;
+            });
+        };
+
         var init = function () {
             ProjectListService.recommended().then(function success (data) {
                 // console.log(data)
-                $scope.projects = data;
+                $scope.projects = data.results;
+                $scope.next_page = data.next;
+                $scope.previous_page = data.previous;
             });
         };
 
@@ -54,7 +64,12 @@ app.controller("SelectedProjectController", [
         $scope.project = ProjectListService.selected_project();
         $scope.$on('project:updated', function( event, project) {
             $scope.project = project;
+            $('#id_0-donation_recipient').val([project.id]);
         });
+
+        $scope.clearSelectedProject = function () {
+            ProjectListService.selected_project(null);
+        };
     }
 ])// end controller
 
@@ -63,8 +78,9 @@ app.factory('ProjectListService', [
     '$q',
     '$log',
     '$resource',
+    '$http',
     '$rootScope',
-    function($q, $log, $resource, $rootScope) {
+    function($q, $log, $resource, $http, $rootScope) {
 
         var selected_project = null;
 
@@ -86,6 +102,21 @@ app.factory('ProjectListService', [
                     $rootScope.$broadcast('project:updated', project);
                 }
             },
+            go: function (url) {
+                var deferred = $q.defer();
+                var api = projectListAPI();
+                var data = {};
+
+                $http.get(url).then(
+                    function success (response) {
+                        deferred.resolve(response.data);
+                    },
+                    function error (err) {
+                        data.results = [];
+                        deferred.reject(err);
+                });
+                return deferred.promise;
+            },
             query: function (q) {
                 var deferred = $q.defer();
                 var api = projectListAPI();
@@ -94,7 +125,7 @@ app.factory('ProjectListService', [
                 api.query({'q': q},
                     function success (response) {
                         data = response.toJSON();
-                        deferred.resolve(data.results);
+                        deferred.resolve(data);
                     },
                     function error (err) {
                         data.results = [];
@@ -111,7 +142,7 @@ app.factory('ProjectListService', [
                 api.query({'q': null},
                     function success (response) {
                         data = response.toJSON();
-                        deferred.resolve(data.results);
+                        deferred.resolve(data);
                     },
                     function error (err) {
                         data.results = [];

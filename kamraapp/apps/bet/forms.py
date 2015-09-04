@@ -32,7 +32,7 @@ class BetFormStart(forms.Form):
     name = forms.CharField(label='I swear that I will:')
     description = forms.CharField(label='A more detailed examination of the commitment:', widget=forms.Textarea)
 
-    donation_recipient = forms.MultipleChoiceField(choices=((None, None),), widget=forms.HiddenInput)
+    donation_recipient = forms.IntegerField(required=False, widget=forms.HiddenInput)
 
     class Media:
         css = {
@@ -64,26 +64,16 @@ class BetFormStart(forms.Form):
         return (obj, is_new)
 
 
-class BetFormDonationRecipient(forms.Form):
-    name = forms.CharField(label='Your Name')
-    email = forms.EmailField()
-
-    def save(self, *args, **kwargs):
-        username = self.cleaned_data['email'].split('@')[0]
-        obj, is_new = User.objects.get_or_create(username=_get_unique_username(username),
-                                                 email=self.cleaned_data['email'])
-        if is_new is True:
-            name = self.cleaned_data['name'].split(' ')
-            obj.first_name = name[0]
-            obj.last_name = ' '.join(name[1:])
-            obj.save(update_fields=['first_name', 'last_name'])
-
-        return (obj, is_new)
+class BetFormDonationRecipient(forms.ModelForm):
+    class Meta:
+        model = DonationRecipient
+        fields = ('name', 'url', 'description')
 
 
 class BetFormUserInfo(forms.Form):
     name = forms.CharField(label='Your Name')
     email = forms.EmailField()
+    password = forms.CharField(label='A password', widget=forms.PasswordInput)
 
     def save(self, *args, **kwargs):
         username = self.cleaned_data['email'].split('@')[0]
@@ -93,7 +83,8 @@ class BetFormUserInfo(forms.Form):
             name = self.cleaned_data['name'].split(' ')
             obj.first_name = name[0]
             obj.last_name = ' '.join(name[1:])
-            obj.save(update_fields=['first_name', 'last_name'])
+            obj.set_password(self.cleaned_data['password'])
+            obj.save(update_fields=['first_name', 'last_name', 'password'])
 
         return (obj, is_new)
 

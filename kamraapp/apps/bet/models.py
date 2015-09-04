@@ -20,6 +20,23 @@ def _default_expiry():
     return datetime.datetime.utcnow() + datetime.timedelta(weeks=2)
 
 
+def _bet_exists(slug):
+    try:
+        return Bet.objects.get(slug=slug)
+    except Bet.DoesNotExist:
+        return None
+
+
+def _get_unique_slug(slug):
+    slug = slugify(slug)  # apply the transforms first so that the lookup acts on the actual username
+    slug = slug[0:29]
+    while _bet_exists(slug=slug):
+        slug = '%s-%s' % (slug, uuid.uuid4().get_hex()[:4])
+        slug = slug[0:29]  # be aware of fencepost error here field limit is 30
+
+    return slug
+
+
 class Bet(models.Model):
     """
     Primary bet object, can ahve sub and counter bets
@@ -67,7 +84,10 @@ class Bet(models.Model):
                 return 'Validation Pending'
 
     def __unicode__(self):
-        return self.name
+        try:
+            return '%s commits to %s' % (self.user.first_name, self.name,)
+        except:
+            return 'Unknown commits to %s' % (self.name,)
 
     def get_absolute_url(self):
         return reverse('bet:detail', kwargs={'slug': self.slug})
@@ -75,7 +95,7 @@ class Bet(models.Model):
     def save(self, *args, **kwargs):
         # ugly make a signal handler
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = _get_unique_slug(slug=slugify(self.name))
 
         return super(Bet, self).save(*args, **kwargs)
 
@@ -98,6 +118,9 @@ class DonationRecipient(models.Model):
     weight = models.IntegerField(default=0)
 
     data = JSONField(default={})
+
+    def __unicode__(self):
+        return '%s' % (self.name,)
 
     def save(self, *args, **kwargs):
         # ugly make a signal handler
