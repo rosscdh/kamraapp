@@ -28,7 +28,7 @@ def _get_unique_username(username):
     return username
 
 
-class BetFormStep1(forms.Form):
+class BetFormStart(forms.Form):
     name = forms.CharField(label='I swear that I will:')
     description = forms.CharField(label='A more detailed examination of the commitment:', widget=forms.Textarea)
 
@@ -64,7 +64,24 @@ class BetFormStep1(forms.Form):
         return (obj, is_new)
 
 
-class BetFormStep2(forms.Form):
+class BetFormDonationRecipient(forms.Form):
+    name = forms.CharField(label='Your Name')
+    email = forms.EmailField()
+
+    def save(self, *args, **kwargs):
+        username = self.cleaned_data['email'].split('@')[0]
+        obj, is_new = User.objects.get_or_create(username=_get_unique_username(username),
+                                                 email=self.cleaned_data['email'])
+        if is_new is True:
+            name = self.cleaned_data['name'].split(' ')
+            obj.first_name = name[0]
+            obj.last_name = ' '.join(name[1:])
+            obj.save(update_fields=['first_name', 'last_name'])
+
+        return (obj, is_new)
+
+
+class BetFormUserInfo(forms.Form):
     name = forms.CharField(label='Your Name')
     email = forms.EmailField()
 

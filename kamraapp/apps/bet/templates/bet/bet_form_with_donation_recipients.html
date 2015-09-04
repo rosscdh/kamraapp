@@ -5,35 +5,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row" ng-app="ProjectListApp">
   <div class="col-md-6">
 
     <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="">Submit</button>
+      {{ form.as_p }}
+      <button type="submit" name="">Submit</button>
     </form>
+
+    {% verbatim %}
+    <div ng-controller="SelectedProjectController">
+      <div class="media" ng-show="project">
+        <div class="media-left media-middle">
+          <a href="#">
+            <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
+          </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ project.name }}</h4>
+        </div>
+      </div>
+    </div>
+    {% endverbatim %}
 
   </div>
   <div class="col-md-6">
 
     {% verbatim %}
-    <div ng-app="ProjectListApp">
-      <div ng-controller="ProjectListController">
-        <div class="loading" ng-show="projects.length==0">Please wait...</div>
+    <div ng-controller="ProjectListController">
+      <div class="loading" ng-show="projects.length==0">Please wait...</div>
 
-        <div class="media" ng-show="projects" ng-repeat="project in projects track by $index">
-          <div class="media-left media-middle">
-            <a href="#">
-              <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
-            </a>
-          </div>
-          <div class="media-body">
-              <h4 class="media-heading">{{ project.name }}</h4>
-              <span ng-bind-html="project.short_description"></span>
-          </div>
+      <div class="media" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)" ng-style="{cursor: 'pointer'}">
+        <div class="media-left media-top">
+          <a href="#">
+            <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
+          </a>
         </div>
-
+        <div class="media-body">
+            <h4 class="media-heading">{{ project.name }}</h4>
+            <span ng-bind-html="project.short_description"></span>
+        </div>
       </div>
+
     </div>
     {% endverbatim %}
 

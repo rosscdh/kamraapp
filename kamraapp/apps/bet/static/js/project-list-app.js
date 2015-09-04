@@ -29,6 +29,10 @@ app.controller("ProjectListController", [
     function ($scope, $q, $filter, $location, ProjectListService) {
         $scope.projects = [];
 
+        $scope.selectProject = function (project) {
+            ProjectListService.selected_project(project);
+        };
+
         var init = function () {
             ProjectListService.recommended().then(function success (data) {
                 // console.log(data)
@@ -40,12 +44,29 @@ app.controller("ProjectListController", [
     }
 ])// end controller
 
+app.controller("SelectedProjectController", [
+    '$scope',
+    '$q',
+    '$filter',
+    '$location',
+    'ProjectListService',
+    function ($scope, $q, $filter, $location, ProjectListService) {
+        $scope.project = ProjectListService.selected_project();
+        $scope.$on('project:updated', function( event, project) {
+            $scope.project = project;
+        });
+    }
+])// end controller
+
 
 app.factory('ProjectListService', [
     '$q',
     '$log',
     '$resource',
-    function($q, $log, $resource) {
+    '$rootScope',
+    function($q, $log, $resource, $rootScope) {
+
+        var selected_project = null;
 
         function projectListAPI() {
             return $resource('/donation-recipients/:slug', {}, {
@@ -57,6 +78,14 @@ app.factory('ProjectListService', [
         };
 
         return {
+            selected_project: function (project) {
+                if (project === undefined) {
+                    return selected_project;
+                } else {
+                    selected_project = project;
+                    $rootScope.$broadcast('project:updated', project);
+                }
+            },
             query: function (q) {
                 var deferred = $q.defer();
                 var api = projectListAPI();

@@ -7,7 +7,7 @@ from django.views.generic import UpdateView, ListView, DetailView
 from formtools.wizard.views import SessionWizardView
 
 from .models import Bet
-from .forms import BetFormStep1, BetFormStep2, ShareForm
+from .forms import BetFormStart, BetFormDonationRecipient, BetFormUserInfo, ShareForm
 
 
 class BetListView(ListView):
@@ -16,13 +16,33 @@ class BetListView(ListView):
     model = Bet
 
 
+def show_donation_recipient_form(wizard):
+    """Return true if user opts to pay by credit card"""
+    # Get cleaned data from payment step
+    cleaned_data = wizard.get_cleaned_data_for_step('0') or {'method': None}
+    return cleaned_data.get('donation_recipient', None) is not None
+
+
+def show_user_info_form(wizard):
+    """
+    """
+    return wizard.request.user.is_authenticated() is False
+
+
 class BetCreateView(SessionWizardView):
     """
     """
     TEMPLATES = {
         '0': 'bet/bet_form_with_donation_recipients.html'
     }
-    form_list = [BetFormStep1, BetFormStep2]
+
+    condition_dict = {
+        '1': show_donation_recipient_form,
+        '2': show_user_info_form,
+    }
+
+    form_list = [BetFormStart, BetFormDonationRecipient, BetFormUserInfo]
+
     template_name = 'bet/bet_form.html'
 
     def get_template_names(self):
@@ -33,7 +53,8 @@ class BetCreateView(SessionWizardView):
 
     def done(self, form_list, form_dict, **kwargs):
         bet, is_new = form_dict['0'].save()
-        user, is_new = form_dict['1'].save()
+        donation_recipient, is_new = form_dict['1'].save()
+        user, is_new = form_dict['2'].save()
 
         # save the user associated with this bet
         bet.user = user
@@ -61,7 +82,7 @@ class BetFormView(UpdateView):
     """
     """
     model = Bet
-    form_class = BetFormStep1
+    form_class = BetFormStart
     template_name = 'bet/bet_form.html'
 
 
