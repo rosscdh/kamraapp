@@ -428,7 +428,7 @@ def fixtures():
 def assets():
     local('rm -Rf ./static')
     # collect static components
-    local('python ./manage.py collectstatic --noinput')
+    local('DJANGO_ENV=staging python ./manage.py collectstatic --noinput')
     #put('./static/*', '/home/ubuntu/apps/catmap/static/')
     #local('tar cvzf static.tar.gz ./static')
     rsync_project(local_dir='./static', remote_dir='%sstatic' % env.remote_project_path, exclude='.git')
@@ -597,8 +597,8 @@ def deploy(is_predeploy='False',full='False',db='False',search='False'):
 
     requirements()
 
-    update_env_conf()
     relink()
+    update_env_conf()
     assets()
     clean_start()
     #crontabs()

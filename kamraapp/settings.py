@@ -25,7 +25,7 @@ SECRET_KEY = '9!ceu3zg_jrqqkccn+ilfd!t^kfjsk-hg#!a+ii^ue-oi$+gd8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+TEST_PREPROD = DEBUG
 ALLOWED_HOSTS = ['*']
 
 
