@@ -5,6 +5,8 @@ from django.template.defaultfilters import slugify
 
 from . import SUB_BET_TYPE
 
+from jsonfield import JSONField
+
 import os
 import uuid
 import datetime
@@ -43,6 +45,8 @@ class Bet(models.Model):
                                     null=True,
                                     blank=True)
 
+    data = JSONField(default={})
+
     expires_at = models.DateTimeField(default=_default_expiry)
 
     created_at = models.DateTimeField(auto_now=True)
@@ -76,6 +80,11 @@ class Bet(models.Model):
         return super(Bet, self).save(*args, **kwargs)
 
 
+class DonationRecipientManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super(DonationRecipientManager, self).get_queryset(*args, **kwargs).order_by('-weight')
+
+
 class DonationRecipient(models.Model):
     """
     Set of donation recipients, @TODO store in a spearate app?
@@ -85,6 +94,10 @@ class DonationRecipient(models.Model):
     url = models.URLField()
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+
+    weight = models.IntegerField(default=0)
+
+    data = JSONField(default={})
 
     def save(self, *args, **kwargs):
         # ugly make a signal handler
@@ -105,5 +118,6 @@ class Proof(models.Model):
     """
     file = models.FileField(upload_to=_storage_path)
     is_validated = models.BooleanField(default=False)
+    data = JSONField(default={})
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)

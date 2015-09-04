@@ -140,10 +140,12 @@ STATICFILES_DIRS = (
 BOWER_INSTALLED_APPS = (
     'angularjs',
     'angular-resource',
+    'angular-sanitize',
     'angular-ui-router',
     'angular-moment',
     'moment',
     'angular-loading-bar',
+    'angular-smart-table',
 )
 
 PIPELINE_JS = {
@@ -156,11 +158,16 @@ PIPELINE_JS = {
             'angular/angular.js',
             'angular-ui-router/release/angular-ui-router.js',
             'angular-resource/angular-resource.js',
+            'angular-sanitize/angular-sanitize.js',
             # moment timestamps
             'moment/moment.js',
             'angular-moment/angular-moment.js',
             # loading bar
             'angular-loading-bar/build/loading-bar.js',
+            # table
+            'angular-smart-table/dist/smart-table.js',
+            # main app
+            'js/project-list-app.js',
         ),
         'output_filename': 'js/dashboard.js',
     },
@@ -181,6 +188,30 @@ PIPELINE_COMPILERS = (
     'pipeline.compilers.less.LessCompiler',
     'pipeline.compilers.sass.SASSCompiler',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'rest_framework.filters.DjangoFilterBackend',
+    # ),
+    'PAGINATE_BY': 25
+}
+
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 2
+}
 
 try:
     from .local_settings import *

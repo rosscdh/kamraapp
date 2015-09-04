@@ -5,15 +5,45 @@
 {% endblock %}
 
 {% block content %}
-<form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
-{{ form.as_p }}
-<button type="submit" name="">Submit</button>
-</form>
+<div class="row">
+  <div class="col-md-6">
+
+    <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="">Submit</button>
+    </form>
+
+  </div>
+  <div class="col-md-6">
+
+    {% verbatim %}
+    <div ng-app="ProjectListApp">
+      <div ng-controller="ProjectListController">
+        <div class="loading" ng-show="projects.length==0">Please wait...</div>
+
+        <div class="media" ng-show="projects" ng-repeat="project in projects track by $index">
+          <div class="media-left media-middle">
+            <a href="#">
+              <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
+            </a>
+          </div>
+          <div class="media-body">
+              <h4 class="media-heading">{{ project.name }}</h4>
+              <span ng-bind-html="project.short_description"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endverbatim %}
+
+  </div>
+</div>
+
 {% endblock %}
 
 {% block javascript_footer %}
 {% javascript 'dashboard' %}
-{{ form.media }}
 <script>
 $( document ).ready(function() {
 });

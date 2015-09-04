@@ -1,11 +1,10 @@
 var app = angular.module('ProjectListApp', [
     'ui.router',
     'ngResource',
+    'ngSanitize',
     'angularMoment',
     'angular-loading-bar',
-    'daterangepicker',
     'smart-table',
-    'chart.js',
 ])
 
 
@@ -15,24 +14,26 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('index', {
             url: "/",
-            templateUrl: "/static/html/partials/_job_list.html",
-            controller: "DashboardController"
+            templateUrl: "",
+            controller: "ProjectListController"
         })
 })
 
 
-app.controller("DashboardController", [
+app.controller("ProjectListController", [
     '$scope',
     '$q',
     '$filter',
     '$location',
     'ProjectListService',
     function ($scope, $q, $filter, $location, ProjectListService) {
+        $scope.projects = [];
 
         var init = function () {
-            ProjectListService.initial().then(function success (data) {
+            ProjectListService.recommended().then(function success (data) {
+                // console.log(data)
+                $scope.projects = data;
             });
-
         };
 
         init(); // initialize
@@ -51,7 +52,7 @@ app.factory('ProjectListService', [
                 'query': {
                     'cache': false,
                     'isArray': false
-                },
+                }
             });
         };
 
@@ -63,7 +64,25 @@ app.factory('ProjectListService', [
 
                 api.query({'q': q},
                     function success (response) {
-                        deferred.resolve(response.toJSON());
+                        data = response.toJSON();
+                        deferred.resolve(data.results);
+                    },
+                    function error (err) {
+                        data.results = [];
+                        deferred.reject(err);
+                    }
+                );
+                return deferred.promise;
+            },
+            recommended: function () {
+                var deferred = $q.defer();
+                var api = projectListAPI();
+                var data = {};
+
+                api.query({'q': null},
+                    function success (response) {
+                        data = response.toJSON();
+                        deferred.resolve(data.results);
                     },
                     function error (err) {
                         data.results = [];

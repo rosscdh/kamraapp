@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
+import jsonfield.fields
 import kamraapp.apps.bet.models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -18,11 +19,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('access_token', models.CharField(default=b'6fe7275a-db43-493d-89a0-6872f8d59d34', max_length=255)),
-                ('access_secret', models.CharField(default=b'd9857f9f-91ef-46b4-ba85-abc08bd9d5b7', max_length=255)),
+                ('access_token', models.CharField(default=b'3b2c8855-e597-4773-81c4-06bebdd31966', max_length=255)),
+                ('access_secret', models.CharField(default=b'a511caa3-5a95-4b95-8559-3541d9e10416', max_length=255)),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
                 ('sub_bet_type', models.CharField(blank=True, max_length=24, null=True, choices=[(b'parent', b'Parent'), (b'clone', b'Clone'), (b'bet_for', b'For'), (b'bet_against', b'Against')])),
+                ('data', jsonfield.fields.JSONField(default={})),
                 ('expires_at', models.DateTimeField(default=kamraapp.apps.bet.models._default_expiry)),
                 ('created_at', models.DateTimeField(auto_now=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
@@ -34,10 +36,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('slug', models.SlugField()),
-                ('uuid', models.CharField(default=b'6ad72929-acd9-4a9f-9c2d-01f60e93a8ec', max_length=255)),
+                ('uuid', models.CharField(default=b'd00c822a-8e5e-4a53-a3fa-9d3c0db52ca0', max_length=255)),
                 ('url', models.URLField()),
                 ('name', models.CharField(max_length=255, null=True, blank=True)),
                 ('description', models.TextField(null=True, blank=True)),
+                ('weight', models.IntegerField(default=0)),
+                ('data', jsonfield.fields.JSONField(default={})),
             ],
         ),
         migrations.CreateModel(
@@ -46,6 +50,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('file', models.FileField(upload_to=kamraapp.apps.bet.models._storage_path)),
                 ('is_validated', models.BooleanField(default=False)),
+                ('data', jsonfield.fields.JSONField(default={})),
                 ('created_at', models.DateTimeField(auto_now=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
