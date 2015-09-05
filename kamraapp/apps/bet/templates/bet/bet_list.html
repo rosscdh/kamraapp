@@ -1,15 +1,20 @@
-{% extends 'bet/base.html' %}
+{% extends 'bet/base.html' %}{% load featured_html %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-6">
-  <ul>
-    {% for bet in object_list %}
-    <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
-    {% empty %}
-    <li><a href="{% url 'bet:create' %}">New source of Karma</a></li>
-    {% endfor %}
-  </ul>
+    <div class="row">
+      <h3>Featured Donation Beneficiaries</h3>
+      {% featured_recipients %}
+    </div>
+
+    <ul>
+      {% for bet in object_list %}
+      <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
+      {% empty %}
+      <li><a href="{% url 'bet:create' %}">New source of Karma</a></li>
+      {% endfor %}
+    </ul>
   </div>
   {% if user.is_authenticated %}
   <div class="col-md-6">

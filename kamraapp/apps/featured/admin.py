@@ -4,4 +4,4 @@ from django.contrib import admin
 from .models import FeaturedBet, FeaturedDonationRecipient
 
 
-admin.site.register(FeaturedBet, FeaturedDonationRecipient)
+admin.site.register([FeaturedBet, FeaturedDonationRecipient])

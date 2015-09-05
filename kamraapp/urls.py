@@ -7,6 +7,7 @@ from .static import static
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('kamraapp.apps.bet.urls', namespace='bet')),
+    url(r'^featured/', include('kamraapp.apps.featured.urls', namespace='featured')),
 ]
 
 if settings.DEBUG is True or settings.TEST_PREPROD is True:

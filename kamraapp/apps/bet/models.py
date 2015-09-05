@@ -69,6 +69,9 @@ class Bet(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at', 'name']
+
     @property
     def is_sub_bet(self):
         return self.parent_bet is not None
@@ -118,6 +121,9 @@ class DonationRecipient(models.Model):
     weight = models.IntegerField(default=0)
 
     data = JSONField(default={})
+
+    class Meta:
+        ordering = ['-weight', 'name']
 
     def __unicode__(self):
         return '%s' % (self.name,)
