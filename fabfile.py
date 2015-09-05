@@ -1,7 +1,6 @@
 from __future__ import with_statement
 from fabric.api import *
 from fabric.contrib import files
-from fabric.contrib.project import rsync_project
 #from fab_deploy import crontab
 
 from git import *
@@ -68,7 +67,7 @@ def staging():
 
     env.environment = 'staging'
     env.environment_class = 'staging'
-    env.newrelic_app_name = 'CatMap Staging'
+    env.newrelic_app_name = 'Karma-App Staging'
 
     env.remote_project_path = '/home/ubuntu/apps/kamraapp/'
     env.deploy_archive_path = '/home/ubuntu/apps/'
@@ -291,9 +290,9 @@ def start_nginx():
         sudo('service nginx start')
 
 @task
-def restart_nginx():
+def restart_nginx(event='restart'):
     with settings(warn_only=True):
-        sudo('service nginx restart')
+        sudo('service nginx %s' % event)
 
 
 @task
@@ -428,10 +427,13 @@ def fixtures():
 def assets():
     local('rm -Rf ./static')
     # collect static components
-    local('DJANGO_ENV=staging python ./manage.py collectstatic --noinput')
-    #put('./static/*', '/home/ubuntu/apps/catmap/static/')
-    #local('tar cvzf static.tar.gz ./static')
-    rsync_project(local_dir='./static', remote_dir='%sstatic' % env.remote_project_path, exclude='.git')
+    local('python ./manage.py collectstatic --noinput')
+    local('tar cvzf static.tar.gz ./static')
+    put('static.tar.gz', env.remote_project_path)
+    run('tar -zxvf %sstatic.tar.gz -C %s' % (env.remote_project_path, env.remote_project_path))
+    run('rm %sstatic.tar.gz' % env.remote_project_path)
+    local('rm static.tar.gz')
+
 
 @task
 def requirements():

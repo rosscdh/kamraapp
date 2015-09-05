@@ -3,12 +3,12 @@
 from django.template.defaultfilters import slugify
 from django.core.management.base import BaseCommand
 
+from termcolor import colored
+
 from kamraapp.apps.bet.models import DonationRecipient
 # from pyquery import PyQuery as pq
 import urllib
-import urlparse
 
-# import os
 import requests
 
 
@@ -22,6 +22,7 @@ class Command(BaseCommand):
         parser.add_argument('--country', action='store_true', dest='country', default='Deutschland', help='Specify alternate country')
         parser.add_argument('--start_page', action='store_true', dest='start_page', default=1, help='Which Page to start at')
         parser.add_argument('--num_pages', action='store_true', dest='num_pages', default=2, help='Number of pages to retrieve')
+        parser.add_argument('--add_all', action='store_true', dest='add_all', default=False, help='Just add all items without prompts')
 
     def handle(self, *args, **options):
         for page in range(0, options.get('num_pages')):
@@ -49,6 +50,21 @@ class Command(BaseCommand):
                 except:
                     url = None
 
+                weight = 0
+                if options.get('add_all') is False:
+                    try:
+                        DonationRecipient.objects.get(slug=slug)
+                        exists = True
+                    except DonationRecipient.DoesNotExist:
+                        exists = False
+
+                    message = '(exists: %s) %s - %s' % (exists, name, url)
+                    print(colored(message, 'green' if exists is False else 'magenta', attrs=['reverse', 'blink']))
+                    weight = raw_input(colored('Article weight? (0 default, "n" wont import):', 'yellow', attrs=['reverse', 'blink']))
+                    # handle no events
+                    if weight == 'n':
+                        continue
+
                 recipient, is_new = DonationRecipient.objects.get_or_create(slug=slug)
                 recipient.name = name
                 recipient.description = description
@@ -58,5 +74,6 @@ class Command(BaseCommand):
                         'provider': 'betterplace'
                     }
                 })
+                recipient.weight = weight
                 recipient.data = item
                 recipient.save()

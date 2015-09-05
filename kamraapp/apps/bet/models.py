@@ -66,7 +66,7 @@ class Bet(models.Model):
 
     expires_at = models.DateTimeField(default=_default_expiry)
 
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @property

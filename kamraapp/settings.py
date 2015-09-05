@@ -42,6 +42,7 @@ DJANGO_APPS = (
 
 APPLICATION_APPS = (
     'kamraapp.apps.bet',
+    'kamraapp.apps.featured',
 )
 
 HELPER_APPS = (
