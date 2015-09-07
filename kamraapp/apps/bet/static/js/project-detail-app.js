@@ -1,4 +1,4 @@
-var app = angular.module('ProjectListApp', [
+var app = angular.module('ProjectDetailApp', [
     'ui.router',
     'ngResource',
     'ngSanitize',
@@ -20,61 +20,36 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 })
 
 
-app.controller("ProjectListController", [
+app.controller("BetForController", [
     '$scope',
     '$q',
     '$filter',
     '$location',
-    'ProjectListService',
-    function ($scope, $q, $filter, $location, ProjectListService) {
-        $scope.projects = [];
-
-        $scope.selectProject = function (project) {
-            ProjectListService.selected_project(project);
-        };
-
-        $scope.go = function (url) {
-            ProjectListService.go(url).then(function success (data) {
-                $scope.projects = data.results;
-                $scope.next_page = data.next;
-                $scope.previous_page = data.previous;
-            });
-        };
-
+    'ProjectDetailService',
+    function ($scope, $q, $filter, $location, ProjectDetailService) {
         var init = function () {
-            ProjectListService.query().then(function success (data) {
-                // console.log(data)
-                $scope.projects = data.results;
-                $scope.next_page = data.next;
-                $scope.previous_page = data.previous;
-            });
         };
 
         init(); // initialize
     }
 ])// end controller
 
-app.controller("SelectedProjectController", [
+app.controller("BetAgainstController", [
     '$scope',
     '$q',
     '$filter',
     '$location',
-    'ProjectListService',
-    function ($scope, $q, $filter, $location, ProjectListService) {
-        $scope.project = ProjectListService.selected_project();
-        $scope.$on('project:updated', function( event, project) {
-            $scope.project = project;
-            $('#id_0-donation_recipient').val([project.id]);
-        });
-
-        $scope.clearSelectedProject = function () {
-            ProjectListService.selected_project(null);
+    'ProjectDetailService',
+    function ($scope, $q, $filter, $location, ProjectDetailService) {
+        var init = function () {
         };
+
+        init(); // initialize
     }
 ])// end controller
 
 
-app.factory('ProjectListService', [
+app.factory('ProjectDetailService', [
     '$q',
     '$log',
     '$resource',
@@ -84,8 +59,8 @@ app.factory('ProjectListService', [
 
         var selected_project = null;
 
-        function projectListAPI() {
-            return $resource('/donation-recipients/:slug', {}, {
+        function projectDetailAPI() {
+            return $resource('/bet/:slug/:action', {}, {
                 'query': {
                     'cache': false,
                     'isArray': false
@@ -95,7 +70,7 @@ app.factory('ProjectListService', [
 
         var query_api = function (method, url_params, data) {
             var deferred = $q.defer();
-            var api = projectListAPI();
+            var api = projectDetailAPI();
             var data = {};
             url_params = url_params || {};
             data = data || {};
@@ -114,28 +89,27 @@ app.factory('ProjectListService', [
         };
 
         return {
-            selected_project: function (project) {
-                if (project === undefined) {
-                    return selected_project;
-                } else {
-                    selected_project = project;
-                    $rootScope.$broadcast('project:updated', project);
-                }
-            },
             go: function (url) {
                 var deferred = $q.defer();
-                var api = projectListAPI();
-                var data = {};
 
                 $http.get(url).then(
                     function success (response) {
                         deferred.resolve(response.data);
                     },
                     function error (err) {
-                        data.results = [];
                         deferred.reject(err);
                 });
                 return deferred.promise;
+            },
+            bet_for: function (slug, user) {
+                return query_api('post',
+                                 {'action': 'for'},
+                                 {'user': user.id});
+            },
+            bet_against: function (slug, user) {
+                return query_api('post',
+                                 {'action': 'against'},
+                                 {'user': user.id});
             },
             query: function (q) {
                 return query_api('query', {'q': q});

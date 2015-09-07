@@ -43,7 +43,7 @@ class Bet(models.Model):
     """
     SUB_BET_TYPE = SUB_BET_TYPE
 
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     user = models.ForeignKey('auth.User', null=True, blank=True)
 
     # oath2 style token and secret to encode keys used in the urls that are pasted
@@ -54,7 +54,7 @@ class Bet(models.Model):
     description = models.TextField(null=True, blank=True)
     amount = models.IntegerField(default=5.00, null=True, blank=True)
     recipients = models.ManyToManyField('bet.DonationRecipient')
-    proofs = models.ManyToManyField('bet.Proof')
+    proofs = models.ManyToManyField('bet.Proof', blank=True)
 
     parent_bet = models.ForeignKey('bet.Bet', null=True, blank=True)
     sub_bet_type = models.CharField(max_length=24,

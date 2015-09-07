@@ -152,7 +152,7 @@ BOWER_INSTALLED_APPS = (
 )
 
 PIPELINE_JS = {
-    'dashboard': {
+    'angular': {
         'source_filenames': (
             # support
             'jquery/dist/jquery.js',
@@ -169,8 +169,27 @@ PIPELINE_JS = {
             'angular-loading-bar/build/loading-bar.js',
             # table
             'angular-smart-table/dist/smart-table.js',
+        ),
+        'output_filename': 'js/angular.js',
+    },
+    'project-list': {
+        'source_filenames': (
             # main app
             'js/project-list-app.js',
+        ),
+        'output_filename': 'js/project-list.js',
+    },
+    'project-detail': {
+        'source_filenames': (
+            # main app
+            'js/project-detail-app.js',
+        ),
+        'output_filename': 'js/project-detail.js',
+    },
+    'bet-detail': {
+        'source_filenames': (
+            # main app
+            'js/bet-detail-app.js',
         ),
         'output_filename': 'js/dashboard.js',
     },

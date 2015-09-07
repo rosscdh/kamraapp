@@ -1,0 +1,8 @@
+{% load staticfiles %}
+<div class="social_sharing">
+
+<!-- Social Sharing -->
+{% for key, url in SOCIAL_SHARE_LINKS.iteritems %}
+  <a href="{{ url }}"><img style="width:32px; height:32px;" src="{{ STATIC_URL }}/social_share/{{ key }}_64x64.jpg" alt="{{ key }}" title="{{ key }}" border="0" /></a>
+{% endfor %}
+</div>
