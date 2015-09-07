@@ -47,6 +47,12 @@ app.controller("ProjectListController", [
                 $scope.projects = data.results;
                 $scope.next_page = data.next;
                 $scope.previous_page = data.previous;
+                var selected_project_id = $('#id_0-donation_recipient').val();
+                if (selected_project_id) {
+                    ProjectListService.detail(selected_project_id).then(function success (data) {
+                        $scope.selectProject(data);
+                    });
+                }
             });
         };
 
@@ -85,7 +91,7 @@ app.factory('ProjectListService', [
         var selected_project = null;
 
         function projectListAPI() {
-            return $resource('/donation-recipients/:slug', {}, {
+            return $resource('/donation-recipients/:pk', {}, {
                 'query': {
                     'cache': false,
                     'isArray': false
@@ -136,6 +142,9 @@ app.factory('ProjectListService', [
                         deferred.reject(err);
                 });
                 return deferred.promise;
+            },
+            detail: function (pk) {
+                return query_api('get', {'pk': pk});
             },
             query: function (q) {
                 return query_api('query', {'q': q});

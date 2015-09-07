@@ -19,12 +19,16 @@
     <a href="{% url 'bet:edit' slug=bet.slug %}" class="btn btn-primary pull-right">edit</a>
   </div>
   {% endif %}
+
   <div class="row">
     <div class="col-md-6">
+      {% if object.parent_bet %}
+      <p>Clone of <a href="{{ object.parent_bet.get_absolute_url }}">{{ object.parent_bet.name }} by {{ object.parent_bet.user.first_name }}</a></p>
+      {% endif %}
       I, known as "{{ bet.user.first_name }}" swear I will try to "{{ bet.name }}"
       <p>{{ bet.description }}</p>
       {% if user != object.user %}
-      <a href="" class="btn btn-warning">I also want to do this bet</a>
+      <a href="{% url 'bet:clone' slug=object.slug %}" class="btn btn-warning">I also want to do this bet</a>
       {% endif %}
     </div>
 

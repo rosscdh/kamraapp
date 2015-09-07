@@ -56,8 +56,11 @@ class BetCreateView(SessionWizardView):
         except:
             return self.template_name
 
+    def get_success_url(self):
+        return reverse('bet:detail', kwargs={'slug': self.bet.slug})
+
     def done(self, form_list, form_dict, **kwargs):
-        bet, is_new = form_dict['0'].save()
+        self.bet, is_new = form_dict['0'].save()
 
         if '1' in form_dict.keys() and form_dict['1'].is_valid():
             donation_recipient = form_dict['1'].save()
@@ -74,11 +77,40 @@ class BetCreateView(SessionWizardView):
             user = self.request.user
 
         # save the user associated with this bet
-        bet.user = user
-        bet.save(update_fields=['user'])
-        bet.recipients.add(donation_recipient)
+        self.bet.user = user
+        self.bet.save(update_fields=['user'])
+        self.bet.recipients.add(donation_recipient)
 
-        return redirect(reverse('bet:detail', kwargs={'slug': bet.slug}))
+        return redirect(self.get_success_url())
+
+
+class CloneBetFormView(BetCreateView):
+    """
+    Same functioanlity as create
+    """
+
+    def get_form_initial(self, step):
+        self.bet_to_clone = Bet.objects.get(slug=self.kwargs.get('slug'))
+        initial = super(CloneBetFormView, self).get_form_initial(step=step)
+        if step == '0':
+            initial.update({
+                'name': self.bet_to_clone.name,
+                'description': self.bet_to_clone.description,
+                'amount': self.bet_to_clone.amount,
+                'donation_recipient': self.bet_to_clone.recipients.all().first().pk,
+            })
+
+        return initial
+
+    def done(self, *args, **kwargs):
+        redirect = super(CloneBetFormView, self).done(*args, **kwargs)
+
+        # Setup the clone variables
+        self.bet.parent_bet = self.bet_to_clone
+        self.bet.sub_bet_type = Bet.SUB_BET_TYPE.clone
+        self.bet.save(update_fields=['parent_bet', 'sub_bet_type'])
+        # redirect
+        return redirect
 
 
 class BetDetailView(DetailView):
