@@ -82,6 +82,16 @@
     </div>
 
   </div>
+  {% if bet.bet_set.all %}
+  <div class="row">
+    <h3>Others doing this bet</h3>
+    <ol>
+    {% for other_bet in bet.bet_set.all %}
+    <li><a href="{{ other_bet.get_absolute_url }}">{{ other_bet.name }}</a></li>
+    {% endfor %}
+    </ol>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
 
