@@ -52,7 +52,7 @@ class Bet(models.Model):
 
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    amount = models.IntegerField(default=5.00, null=True, blank=True)
+    amount = models.DecimalField(default=5.00, max_digits=7, decimal_places=2, null=True, blank=True)
     recipients = models.ManyToManyField('bet.DonationRecipient')
     proofs = models.ManyToManyField('bet.Proof', blank=True)
 

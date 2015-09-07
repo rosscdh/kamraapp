@@ -32,16 +32,14 @@
       <h2>Donation Recipient</h2>
       {% for recipient in donation_recipients %}
       <div class="media">
-        <div class="media-left media-top">
-          <a href="#">
-            <img class="media-object img-rounded" src="{{ recipient.picture }}" alt="{{ recipient.name }}" />
-            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-warning">More Info</a>
-            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-success">Donate now</a>
-          </a>
+        <div class="media-top">
+          <a href="#"><img class="media-object img-rounded" src="{{ recipient.picture }}" alt="{{ recipient.name }}" /></a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading">{{ recipient.name }}</h4>
-            <span>{{ recipient.description|safe }}</span>
+            <b class="media-heading">{{ recipient.name }}</b>
+            <div>{{ recipient.description|safe }}</div>
+            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-warning">More Info</a>
+            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-success">Donate now</a>
         </div>
       </div>
       {% endfor %}
