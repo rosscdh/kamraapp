@@ -1,0 +1,20 @@
+{% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles pipeline %}
+
+{% block content %}
+  <article
+    id="intro"
+    class="section-wrapper clearfix"
+    data-custom-background-img="{% static 'images/other_images/bg5.jpg' %}">
+
+    <div class="page-header">
+    <h1>{{ donationrecipient.name }}</h1>
+    </div>
+
+    {{ donationrecipient.description|safe }}
+
+
+  </article><!-- .section-wrapper -->
+{% endblock %}
+
+{% block javascript_footer %}
+{% endblock %}

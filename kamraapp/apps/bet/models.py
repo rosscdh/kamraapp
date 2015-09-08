@@ -43,7 +43,7 @@ class Bet(models.Model):
     """
     SUB_BET_TYPE = SUB_BET_TYPE
 
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(unique=True, blank=True)
     user = models.ForeignKey('auth.User', null=True, blank=True)
 
     # oath2 style token and secret to encode keys used in the urls that are pasted
@@ -123,7 +123,7 @@ class DonationRecipient(models.Model):
     """
     Set of donation recipients, @TODO store in a spearate app?
     """
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, blank=True)
     uuid = models.CharField(default=temp_uuid_gen(), max_length=255)
     url = models.URLField()
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -138,6 +138,9 @@ class DonationRecipient(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.name,)
+
+    def get_absolute_url(self):
+        return reverse('bet:donationrecipient-detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         # ugly make a signal handler

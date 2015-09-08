@@ -24,7 +24,7 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
-    #provider_links = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = DonationRecipient
@@ -67,6 +67,8 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         return truncatewords_html(obj.description, 15)
 
+    def get_url(self, obj):
+        return obj.get_absolute_url()
 
 
 

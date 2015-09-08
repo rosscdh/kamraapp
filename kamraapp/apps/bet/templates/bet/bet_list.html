@@ -1,7 +1,8 @@
-{% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles %}
+{% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles pipeline %}
 
 {% block content %}
   <article
+    ng-app="ProjectListApp"
     id="intro"
     class="section-wrapper clearfix"
     data-custom-background-img="{% static 'images/other_images/bg5.jpg' %}">
@@ -17,7 +18,7 @@
 
       <div class="col-sm-10 col-md-9 pull-right">
 
-          <section class="feature-text">
+          <section id="featured-projects" class="feature-text">
             <h3>Featured Donation Beneficiaries</h3>
             {% featured_recipients %}
             {% if user.is_authenticated %}
@@ -31,7 +32,31 @@
               {% endif %}
           </section>
 
+          {% verbatim %}
+          <section id="projects" ng-controller="ProjectListController">
+            <h3>Top Projects</h3>
+            <div class="media" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)" ng-style="{cursor: 'pointer'}">
+                <div class="media-body">
+                    <b class="media-heading"><a ng-href="{{ project.url }}">{{ project.name }}</a></b>
+                    <!-- <a ng-href="{{ project.url }}"><img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />more...</a> -->
+                </div>
+            </div>
+          </section>
+          {% endverbatim %}
+
+          <section id="bets">
+            <h3>Latest Karma Sources</h3>
+            <ul class="list-unstyled">
+              {% for bet in object_list %}
+              <li><a href="{{ bet.get_absolute_url }}">{{ bet.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </section>
       </div><!-- .col-sm-10 -->
     </div><!-- .content-wrapper -->
   </article><!-- .section-wrapper -->
+{% endblock %}
+
+{% block javascript_footer %}
+  {% javascript 'project-list' %}
 {% endblock %}
