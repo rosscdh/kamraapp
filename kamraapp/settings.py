@@ -130,28 +130,47 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 BOWER_COMPONENTS_ROOT = BASE_DIR
-
 STATICFILES_DIRS = (
     os.path.join(BOWER_COMPONENTS_ROOT, 'bower_components'),
 )
 
 BOWER_INSTALLED_APPS = (
     'angularjs',
+    'angular-loading-bar',
+    'angular-moment',
     'angular-resource',
     'angular-sanitize',
-    'angular-ui-router',
-    'angular-moment',
-    'moment',
-    'angular-loading-bar',
     'angular-smart-table',
+    'angular-ui-router',
+    'bootstrap',
+    'jquery',
+    'moment',
 )
 
 PIPELINE_JS = {
+    'common': {
+        'source_filenames': {
+            'js/detectmobilebrowser.js',
+            'js/functions.js',
+            'js/initialise-functions.js',
+            'js/jquery.easing.js',
+            'js/jquery.fitvids.js',
+            'js/jquery.lazyload.min.js',
+            'js/jquery.nicescroll.min.js',
+            'js/jquery.scrollstop.min.js',
+            'js/lightbox/js/lightbox.js',
+            'js/owl-carousel/owl.carousel.js',
+            'js/vegas/jquery.vegas.js',
+            'js/wow/wow.min.js',
+        },
+        'output_filename': 'dist/js/common.js',
+    },
     'angular': {
         'source_filenames': (
             # support
@@ -170,39 +189,53 @@ PIPELINE_JS = {
             # table
             'angular-smart-table/dist/smart-table.js',
         ),
-        'output_filename': 'js/angular.js',
+        'output_filename': 'dist/js/angular.js',
     },
     'project-list': {
         'source_filenames': (
             # main app
             'js/project-list-app.js',
         ),
-        'output_filename': 'js/project-list.js',
+        'output_filename': 'dist/js/project-list.js',
     },
     'project-detail': {
         'source_filenames': (
             # main app
             'js/project-detail-app.js',
         ),
-        'output_filename': 'js/project-detail.js',
+        'output_filename': 'dist/js/project-detail.js',
     },
     'bet-detail': {
         'source_filenames': (
             # main app
             'js/bet-detail-app.js',
         ),
-        'output_filename': 'js/dashboard.js',
+        'output_filename': 'dist/js/dashboard.js',
     },
 }
 
 PIPELINE_CSS = {
+    'common': {
+        'source_filenames': {
+            'js/vegas/jquery.vegas.css',
+            'js/owl-carousel/owl.carousel.css',
+            'js/owl-carousel/owl.theme.css',
+            'js/owl-carousel/owl.transitions.css',
+            'js/wow/animate.css',
+            'css/font-awesome/css/font-awesome.css',
+            'js/lightbox/css/lightbox.css',
+            'css/fonts/stylesheet.css',
+            'css/styles.css',
+        },
+        'output_filename': 'dist/css/common.css'
+    },
     'dashboard': {
         'source_filenames': (
             'bootstrap/dist/css/bootstrap.css',
             # loading bar
             'angular-loading-bar/build/loading-bar.css',
         ),
-        'output_filename': 'css/dashboard.css',
+        'output_filename': 'dist/css/dashboard.css',
     },
 }
 

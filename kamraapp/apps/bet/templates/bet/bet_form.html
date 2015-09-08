@@ -3,12 +3,12 @@
 {% block css_header %}{% endblock %}
 
 {% block content %}
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
-  {{ wizard.management_form }}
-  {{ wizard.form.as_p }}
-<button type="submit" name="">Submit</button>
-</form>
+  <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+  <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
+    {{ wizard.management_form }}
+    {{ wizard.form.as_p }}
+  <button type="submit" name="">Submit</button>
+  </form>
 {% endblock %}
 
 {% block javascript_footer %}

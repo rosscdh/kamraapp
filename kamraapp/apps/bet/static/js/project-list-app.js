@@ -1,10 +1,10 @@
 var app = angular.module('ProjectListApp', [
-    'ui.router',
-    'ngResource',
-    'ngSanitize',
-    'angularMoment',
-    'angular-loading-bar',
-    'smart-table',
+  'ui.router',
+  'ngResource',
+  'ngSanitize',
+  'angularMoment',
+  'angular-loading-bar',
+  'smart-table',
 ])
 
 
@@ -63,23 +63,23 @@ app.controller("ProjectListController", [
 ])// end controller
 
 app.controller("SelectedProjectController", [
-    '$scope',
-    '$q',
-    '$filter',
-    '$location',
-    'ProjectListService',
-    function ($scope, $q, $filter, $location, ProjectListService) {
-        $scope.project = ProjectListService.selected_project();
-        $scope.$on('project:updated', function( event, project) {
-            $scope.project = project;
-            $('#id_0-donation_recipient').val([project.id]);
-        });
+  '$scope',
+  '$q',
+  '$filter',
+  '$location',
+  'ProjectListService',
+  function($scope, $q, $filter, $location, ProjectListService) {
+    $scope.project = ProjectListService.selected_project();
+    $scope.$on('project:updated', function(event, project) {
+      $scope.project = project;
+      $('#id_0-donation_recipient').val([project.id]);
+    });
 
-        $scope.clearSelectedProject = function () {
-            ProjectListService.selected_project(null);
-        };
-    }
-])// end controller
+    $scope.clearSelectedProject = function() {
+      ProjectListService.selected_project(null);
+    };
+  }
+]) // end controller
 
 
 app.factory('ProjectListService', [

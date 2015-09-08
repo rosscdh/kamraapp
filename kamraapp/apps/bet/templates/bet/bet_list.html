@@ -1,31 +1,33 @@
-{% extends 'bet/base.html' %}{% load featured_html %}
+{% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-6">
-    <div class="row">
-      <h3>Featured Donation Beneficiaries</h3>
-      {% featured_recipients %}
-    </div>
+  <article
+    id="intro"
+    class="section-wrapper clearfix"
+    data-custom-background-img="{% static 'images/other_images/bg5.jpg' %}">
 
-    <ul>
-      {% for bet in object_list %}
-      <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
-      {% empty %}
-      <li><a href="{% url 'bet:create' %}">New source of Karma</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% if user.is_authenticated %}
-  <div class="col-md-6">
-    {% for bet in user.bet_set.all %}
-    <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
-    {% empty %}
-    <li><a href="{% url 'bet:create' %}">Why not create a New source of Karma</a></li>
-    {% endfor %}
-  </div>
-  {% else %}
-    <b>Login here</b>
-  {% endif %}
-</div>
+    <div class="content-wrapper clearfix wow fadeInDown" data-wow-delay="0.3s">
+      <div class="col-sm-10 col-md-9 pull-right">
+
+          <section class="feature-text">
+            <h1>Featured Donation Beneficiaries</h1>
+            <!-- {% featured_recipients %} -->
+            <p>TWILLI Air is a fully-responsive, minimalistic HTML template, designed to be ideal for websites with concise content.</p>
+            <p><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg">find out more</a></p>
+<!--             {% if user.is_authenticated %}
+              <div class="col-md-6">
+                {% for bet in user.bet_set.all %}
+                <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
+                {% empty %}
+                <li><a href="{% url 'bet:create' %}">Why not create a New source of Karma</a></li>
+                {% endfor %}
+              </div>
+              {% else %}
+                <b>Login here</b>
+              {% endif %} -->
+          </section>
+
+      </div><!-- .col-sm-10 -->
+    </div><!-- .content-wrapper -->
+  </article><!-- .section-wrapper -->
 {% endblock %}

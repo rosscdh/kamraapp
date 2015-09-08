@@ -1,69 +1,83 @@
 {% extends 'bet/base.html' %}{% load staticfiles pipeline %}
 
 {% block css_header %}
-{% stylesheet 'dashboard' %}
+  {% stylesheet 'common' %}
 {% endblock %}
 
 {% block content %}
-<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-<div class="row" ng-app="ProjectListApp">
-  <div class="col-md-6">
-    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-    <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
-      {{ wizard.management_form }}
-      {{ wizard.form.as_p }}
-      <button class="btn btn-primary" type="submit" name="">Continue</button>
-    </form>
+<article ng-app="ProjectListApp" id="text" class="section-wrapper clearfix" data-custom-background-img="{% static 'images/other_images/bg1.jpg' %}">
+  <div class="content-wrapper clearfix">
+    <div class="col-sm-10 col-md-9 pull-right">
 
-    {% verbatim %}
-    <div ng-controller="SelectedProjectController">
-      <div class="loading" ng-hide="project">Select a project on the right, or simply continue</div>
-      <div class="media" ng-show="project">
-        <div class="media-left media-middle">
-          <a href="#">
-            <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
-          </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">{{ project.name }}</h4>
-        </div>
-      </div>
-      <a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Not this Project</a>
-    </div>
-    {% endverbatim %}
+        <h1 class="section-title">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h1>
 
-  </div>
-  <div class="col-md-6">
+        <p class="feature-paragraph">
+          <img data-img-src="{% static 'images/other_images/transp-image5b.png' %}" class="lazy pull-right" alt="Lorem Ipsum">
+        </p>
+        <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
+          {{ wizard.management_form }}
+          {{ wizard.form.as_p }}
+          <button class="btn btn-primary" type="submit" name="">Continue</button>
+        </form>
 
-    {% verbatim %}
-    <div ng-controller="ProjectListController">
-      <div class="loading" ng-show="projects.length==0">Please wait...</div>
+        {% verbatim %}
+          <div ng-controller="SelectedProjectController">
+            <div class="loading" ng-hide="project">Select a project on the right, or simply continue</div>
+            <div class="media" ng-show="project">
+              <div class="media-left media-middle">
+                <a href="#">
+                  <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
+                </a>
+              </div>
+              <div class="media-body">
+                  <h4 class="media-heading">{{ project.name }}</h4>
+              </div>
+            </div>
+            <a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Not this Project</a>
+          </div>
+        {% endverbatim %}
 
-      <div class="well">
-        <a ng-show="previous_page" href="#" ng-click="go(previous_page)">previous</a>
-        <a ng-show="next_page" href="#" ng-click="go(next_page)">next</a>
-      </div>
+        <div class="col-md-6">
+          {% verbatim %}
+          <div ng-controller="ProjectListController">
+            <div class="loading" ng-show="projects.length==0">Please wait...</div>
 
-      <div class="media" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)" ng-style="{cursor: 'pointer'}">
-        <div class="media-left media-top">
-          <a href="#">
-            <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
-          </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">{{ project.name }}</h4>
-            <span ng-bind-html="project.short_description"></span>
-        </div>
-      </div>
+            <div class="well">
+              <a ng-show="previous_page" href="#" ng-click="go(previous_page)">previous</a>
+              <a ng-show="next_page" href="#" ng-click="go(next_page)">next</a>
+            </div>
 
-    </div>
-    {% endverbatim %}
+            <div class="media" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)" ng-style="{cursor: 'pointer'}">
+              <div class="media-left media-top">
+                <a href="#">
+                  <img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" />
+                </a>
+              </div>
+              <div class="media-body">
+                  <h4 class="media-heading">{{ project.name }}</h4>
+                  <span ng-bind-html="project.short_description"></span>
+              </div>
+            </div>
 
-  </div>
-</div>
+          </div>
+          {% endverbatim %}
+        </div>>
+
+        <div class="content-to-populate-in-modal" id="modal-content-1">
+          <h1>Lorem Ipsum</h1>
+          <p><img data-img-src="{% static 'images/other_images/transp-image4.png' %}" class="lazy rounded_border hover_effect pull-right" alt="Lorem Ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in urna vel ante mollis tincidunt. Donec nec magna condimentum tortor laoreet lobortis. Nunc accumsan sapien eu tortor fringilla, et condimentum metus pellentesque. Maecenas rhoncus tortor nec mi congue aliquet. Integer eu turpis scelerisque, iaculis magna non, tempor sem. Quisque consectetur nisi eu felis euismod, sit amet faucibus justo molestie. Ut pretium sapien dui, id facilisis metus interdum pharetra.</p>
+          <p>Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo aliquam vulputate. Ut eget orci in sapien commodo fringilla. Ut luctus faucibus viverra. Quisque ut ante eget libero rutrum imperdiet. Morbi in diam bibendum, venenatis arcu sed, consequat libero. Nulla imperdiet, ipsum et adipiscing pulvinar, nibh metus porta mauris, et vestibulum dolor sapien sit amet justo. In dignissim leo nec erat faucibus volutpat.</p>
+          <h3>Duis dictum lorem metus, vitae dapibus</h3>
+          <p><img data-img-src="{% static 'images/other_images/transp-image3.png' %}" class="lazy rounded_border hover_effect pull-left" alt="Lorem Ipsum">Sed auctor urna mi, sed fringilla felis vulputate nec. Cras eu nibh id quam pretium convallis. Donec ante enim, placerat nec sagittis sit amet, tempor in velit. Maecenas ultricies commodo lacus id porta. Suspendisse eros elit, lacinia vitae erat vitae, egestas accumsan nunc. Maecenas dictum odio ipsum, non volutpat erat consequat tempor. Pellentesque sed malesuada turpis. Quisque eget lacus sit amet dui feugiat molestie sit amet eget purus. Morbi eget neque nec lectus tempus sagittis nec at ante. </p>
+          <p>Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo aliquam vulputate. Ut eget orci in sapien commodo fringilla. Ut luctus faucibus viverra. Quisque ut ante eget libero rutrum imperdiet. Morbi in diam bibendum, venenatis arcu sed, consequat libero. Nulla imperdiet, ipsum et adipiscing pulvinar, nibh metus porta mauris, et vestibulum dolor sapien sit amet justo. In dignissim leo nec erat faucibus volutpat.</p>
+        </div><!-- #modal-content-1 -->
+
+    </div><!-- .col-sm-10 -->
+  </div><!-- .content-wrapper -->
+</article><!-- .section-wrapper -->
 
 {% endblock %}
 
 {% block javascript_footer %}
-{% javascript 'project-list' %}
+  {% javascript 'project-list' %}
 {% endblock %}
