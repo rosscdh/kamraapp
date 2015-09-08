@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url
-from django.views.generic import DetailView
+from django.views.generic import TemplateView, DetailView
 
 from rest_framework import routers
 
@@ -18,6 +18,9 @@ router.register(r'donation-recipients', DonationRecipientViewset, base_name='don
 
 urlpatterns = patterns('',
     url(r'^$', BetListView.as_view(), name='list'),
+
+    url(r'^contact/$', TemplateView.as_view(template_name='public/contact.html'), name='contact'),
+
     url(r'^k/create/$', BetCreateView.as_view(), name='create'),
     url(r'^k/(?P<slug>[\w-]+)/$', BetDetailView.as_view(), name='detail'),
     url(r'^k/(?P<slug>[\w-]+)/edit/$', BetFormView.as_view(), name='edit'),
