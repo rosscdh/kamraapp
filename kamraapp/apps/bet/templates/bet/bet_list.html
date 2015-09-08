@@ -18,18 +18,16 @@
       <div class="col-sm-10 col-md-9 pull-right">
 
           <section class="feature-text">
-            <h1>Featured Donation Beneficiaries</h1>
+            <h3>Featured Donation Beneficiaries</h3>
             {% featured_recipients %}
             {% if user.is_authenticated %}
               <div class="col-md-6">
-                {% for bet in user.bet_set.all %}
-                <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
-                {% empty %}
-                <li><a href="{% url 'bet:create' %}">Why not create a New source of Karma</a></li>
-                {% endfor %}
+                <ul class="list-unstyled">
+                  {% for bet in user.bet_set.all %}
+                    <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
+                  {% endfor %}
+                </ul>
               </div>
-              {% else %}
-                <b>Login here</b>
               {% endif %}
           </section>
 

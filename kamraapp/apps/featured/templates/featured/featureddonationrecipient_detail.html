@@ -1,0 +1,51 @@
+{% extends 'bet/base.html' %}{% load social_sharing pipeline %}
+
+{% block title %}{{ bet.user.first_name }} commits to {{ bet.name }} - KarmApp{% endblock %}
+
+{% block head %}
+  <!-- SocialSharing -->
+  <meta name="description" content="{{ bet.user.first_name }} commits to {{ bet.name }}">
+  <meta name="keywords" content="">
+  <meta property="og:title" content="{{ bet.user.first_name }} commits to {{ bet.name }}" />
+  <meta property="og:description" content="{{ bet.description }}" />
+  <meta property="og:image" content="" />
+{% endblock %}
+
+{% block content %}
+<div ng-app="ProjectDetailApp">
+
+  <div class="row text-left">
+    {% social_share url=request.build_absolute_uri|escape %}
+  </div>
+
+  <hr/>
+
+  <div class="row">
+    <h1>{{ object.title }}</h1>
+    <p><em>{{ object.excerpt }}</em></p>
+    <p>{{ object.description|safe }}</p>
+  </div>
+
+  <div class="row">
+    {% for recipient in object.donation_recipient.all %}
+      <b>{{ recipient.name }}<b>
+      <p>{{ recipient.description|safe }}</p>
+      <a href="{{ recipient.url }}" target="_NEW">{{ recipient.url }}</a>
+    {% empty %}
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block javascript_footer %}
+{% javascript 'project-detail' %}
+<script>
+window.bet = {
+  "pk": {{ bet.pk }}
+};
+window.user = {
+  "pk": {{ user.pk|default:'"null"' }}
+};
+</script>
+{% endblock %}

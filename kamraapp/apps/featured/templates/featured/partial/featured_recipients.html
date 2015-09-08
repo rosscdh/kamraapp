@@ -1,8 +1,8 @@
-<ul>
+<ul class="list-unstyled">
 {% for item in objects_list %}
   <li>
-  <b>{{ item.title }}</b>
-  <p>{{ item.excerpt }} <a href="{% url 'featured:donation_recipient-detail' slug=item.slug %}">more</a></p>
+    <b>{{ item.title }}</b>
+    <p>{{ item.excerpt }}<br/><a href="{% url 'featured:donation_recipient-detail' slug=item.slug %}">more...</a></p>
   </li>
 {% empty %}
 {% endfor %}
