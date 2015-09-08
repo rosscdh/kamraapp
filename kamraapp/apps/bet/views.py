@@ -118,6 +118,9 @@ class BetDetailView(DetailView):
     """
     model = Bet
 
+    def user_has_cloned_bet(self):
+        return self.object.bet_set.filter(user=self.request.user).count() == 1
+
     def get_context_data(self, *args, **kwargs):
         context = super(BetDetailView, self).get_context_data(*args, **kwargs)
         url = self.request.build_absolute_uri()

@@ -8,7 +8,7 @@ var app = angular.module('ProjectDetailApp', [
 ])
 
 
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $httpProvider, $urlRouterProvider) {
     // For any unmatched url, send to /route1
     $urlRouterProvider.otherwise("/");
     $stateProvider
@@ -17,6 +17,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "",
             controller: "ProjectListController"
         })
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 })
 
 
@@ -27,7 +29,42 @@ app.controller("BetForController", [
     '$location',
     'ProjectDetailService',
     function ($scope, $q, $filter, $location, ProjectDetailService) {
+        $scope.data = {
+            'bets': [],
+            'betters': [],
+            'total': 0,
+        };
+        $scope.can_bet = false;
+        $scope.bet = window.bet;
+        $scope.user = window.user;
+
+        $scope.$watchCollection('data.betters', function(newBetters, oldBetters) {
+          can_bet(newBetters);
+        });
+
+        var can_bet = function (betters) {
+          if (betters.some(function (element, index, array) {
+            console.log(element.pk)
+            return element.pk === $scope.user.pk;
+          }) == true) {
+            $scope.can_bet = false;
+          } else {
+            $scope.can_bet = true;
+          }
+        };
+
+        $scope.bet_for = function (event, data) {
+            ProjectDetailService.bets_for('save', $scope.bet.pk, $scope.user.pk).then(function success (data) {
+                $scope.data = data;
+            });
+        };
+
         var init = function () {
+            ProjectDetailService.bets_for('get', $scope.bet.pk, $scope.user.pk).then(function success (data) {
+                $scope.data = data;
+                console.log($scope.data)
+                can_bet($scope.data.betters);
+            });
         };
 
         init(); // initialize
@@ -41,7 +78,38 @@ app.controller("BetAgainstController", [
     '$location',
     'ProjectDetailService',
     function ($scope, $q, $filter, $location, ProjectDetailService) {
+        $scope.data = {
+            'bets': [],
+            'betters': [],
+            'total': 0,
+        };
+        $scope.can_bet = false;
+        $scope.bet = window.bet;
+        $scope.user = window.user;
+
+        $scope.$watchCollection('data.betters', function(newBetters, oldBetters) {
+          can_bet(newBetters);
+        });
+
+        var can_bet = function (betters) {
+          if (betters.some(function (element, index, array) { return element.pk === $scope.user.pk; }) == true) {
+            $scope.can_bet = false;
+          } else {
+            $scope.can_bet = true;
+          }
+        };
+
+        $scope.bet_against = function (event, data) {
+            ProjectDetailService.bets_against('save', $scope.bet.pk, $scope.user.pk).then(function success (data) {
+                $scope.data = data;
+            });
+        };
+
         var init = function () {
+            ProjectDetailService.bets_against('get', $scope.bet.pk, $scope.user.pk).then(function success (data) {
+                $scope.data = data;
+                can_bet($scope.data.betters);
+            });
         };
 
         init(); // initialize
@@ -60,7 +128,7 @@ app.factory('ProjectDetailService', [
         var selected_project = null;
 
         function projectDetailAPI() {
-            return $resource('/bet/:slug/:action', {}, {
+            return $resource('/bets/:pk/:action', {}, {
                 'query': {
                     'cache': false,
                     'isArray': false
@@ -101,15 +169,17 @@ app.factory('ProjectDetailService', [
                 });
                 return deferred.promise;
             },
-            bet_for: function (slug, user) {
-                return query_api('post',
-                                 {'action': 'for'},
-                                 {'user': user.id});
+            bets_for: function (method, pk, user) {
+                return query_api(method,
+                                {'action': 'bets_for',
+                                 'pk': pk},
+                                {'user': user.id});
             },
-            bet_against: function (slug, user) {
-                return query_api('post',
-                                 {'action': 'against'},
-                                 {'user': user.id});
+            bets_against: function (method, pk, user) {
+                return query_api(method,
+                                {'action': 'bets_against',
+                                 'pk': pk},
+                                {'user': user.id});
             },
             query: function (q) {
                 return query_api('query', {'q': q});

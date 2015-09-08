@@ -95,6 +95,17 @@ class Bet(models.Model):
     def get_absolute_url(self):
         return reverse('bet:detail', kwargs={'slug': self.slug})
 
+    def updated_bets_data(self, bet_type):
+        from kamraapp.apps.bet.api.serializers import SimpleUserSerializer, BetSerializer
+
+        qs = self.bet_set.filter(sub_bet_type=bet_type)
+
+        user_pks = [u.get('user__pk') for u in qs.prefetch_related('user').values('user__pk')]
+
+        return {'total': qs.aggregate(models.Sum('amount')).get('amount__sum'),
+                'betters': SimpleUserSerializer(self.user.__class__.objects.filter(pk__in=user_pks), many=True).data,
+                'bets': BetSerializer(qs, many=True).data}
+
     def save(self, *args, **kwargs):
         # ugly make a signal handler
         if not self.slug:

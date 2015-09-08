@@ -1,8 +1,23 @@
 # -*- coding: utf-8 -*-
-from rest_framework import serializers
 from django.utils.encoding import smart_text
+from django.contrib.auth import get_user_model
 from django.template.defaultfilters import truncatewords_html
-from ..models import DonationRecipient
+
+from rest_framework import serializers
+
+from ..models import Bet, DonationRecipient
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('pk', 'first_name')
+
+
+class BetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bet
+        exclude = ('access_secret', 'access_token', 'data')
 
 
 class DonationRecipientSerializer(serializers.ModelSerializer):

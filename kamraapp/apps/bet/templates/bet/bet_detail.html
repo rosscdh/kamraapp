@@ -27,7 +27,7 @@
       {% endif %}
       I, known as "{{ bet.user.first_name }}" swear I will try to "{{ bet.name }}"
       <p>{{ bet.description }}</p>
-      {% if user != object.user %}
+      {% if user != object.user and not view.user_has_cloned_bet %}
       <a href="{% url 'bet:clone' slug=object.slug %}" class="btn btn-warning">I also want to do this bet</a>
       {% endif %}
     </div>
@@ -48,9 +48,10 @@
       </div>
       {% endfor %}
     </div>
-
   </div>
+
   <hr/>
+
   <div class="row text-center">
   {% social_share url=request.build_absolute_uri|escape %}
   </div>
@@ -63,21 +64,38 @@
       <li><b>For:</b></li>
       <li><b>Against:</b></li>
       <li><b>Donation Total:</b></li>
+      <li><b>Karma Total:</b></li>
       <ul>
     </div>
 
     <div class="col-md-4">
       {% if user != object.user %}
-      <a href="" class="btn btn-success">Bet for</a><br/>
-      <span ng-controller="BetForController"></span>
-      {% for item in object.betfor_set.all %}{% empty %}<b>No bets for yet</b>{% endfor %}
+      {% verbatim %}
+      <span ng-controller="BetForController">
+      <a href="" ng-show="can_bet " ng-click="bet_for()" class="btn btn-success">Bet for</a><br/>
+      {{ bets.total }}
+      <ul>
+        <li ng-repeat="bet in data.bets track by $index">
+          {{ bet.name }}
+        </li>
+      </ul>
+      </span>
+      {% endverbatim %}
       {% endif %}
     </div>
     <div class="col-md-4">
       {% if user != object.user %}
-      <a href="" class="btn btn-danger">Bet against</a><br/>
-      <span ng-controller="BetAgainstController"></span>
-      {% for item in object.betagainst_set.all %}{% empty %}<b>No bets against yet</b>{% endfor %}
+      {% verbatim %}
+      <span ng-controller="BetAgainstController">
+      <a href="" ng-show="can_bet " ng-click="bet_against()" class="btn btn-danger">Bet Against</a><br/>
+      {{ bets.total }}
+      <ul>
+        <li ng-repeat="bet in data.bets track by $index">
+          {{ bet.name }}
+        </li>
+      </ul>
+      </span>
+      {% endverbatim %}
       {% endif %}
     </div>
 
@@ -97,4 +115,12 @@
 
 {% block javascript_footer %}
 {% javascript 'project-detail' %}
+<script>
+window.bet = {
+  "pk": {{ bet.pk }}
+};
+window.user = {
+  "pk": {{ user.pk }}
+};
+</script>
 {% endblock %}

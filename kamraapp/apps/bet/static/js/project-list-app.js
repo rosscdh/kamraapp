@@ -8,7 +8,7 @@ var app = angular.module('ProjectListApp', [
 ])
 
 
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $httpProvider, $urlRouterProvider) {
     // For any unmatched url, send to /route1
     $urlRouterProvider.otherwise("/");
     $stateProvider
@@ -17,6 +17,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "",
             controller: "ProjectListController"
         })
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 })
 
 

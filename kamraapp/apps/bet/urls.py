@@ -4,11 +4,12 @@ from django.conf.urls import patterns, url
 from rest_framework import routers
 
 from .views import BetListView, BetDetailView, BetCreateView, BetFormView, CloneBetFormView, CounterBetFormView
-from .api.views import DonationRecipientViewset
+from .api.views import BetViewset, DonationRecipientViewset
 
 
 router = routers.SimpleRouter(trailing_slash=False)
 
+router.register(r'bets', BetViewset, base_name='bets')
 router.register(r'donation-recipients', DonationRecipientViewset, base_name='donation-recipients')
 
 
