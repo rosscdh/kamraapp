@@ -14,6 +14,12 @@
 {% block content %}
 <div ng-app="ProjectDetailApp">
 
+  <div class="row text-left">
+    {% social_share url=request.build_absolute_uri|escape %}
+  </div>
+
+  <hr/>
+
   {% if user == object.user %}
   <div class="row">
     <a href="{% url 'bet:edit' slug=bet.slug %}" class="btn btn-primary pull-right">edit</a>
@@ -52,10 +58,6 @@
 
   <hr/>
 
-  <div class="row text-center">
-  {% social_share url=request.build_absolute_uri|escape %}
-  </div>
-  <hr/>
   <div class="row">
 
     <div class="col-md-4">
@@ -120,7 +122,7 @@ window.bet = {
   "pk": {{ bet.pk }}
 };
 window.user = {
-  "pk": {{ user.pk }}
+  "pk": {{ user.pk|default:'"null"' }}
 };
 </script>
 {% endblock %}

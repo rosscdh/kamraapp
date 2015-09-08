@@ -6,15 +6,21 @@
     class="section-wrapper clearfix"
     data-custom-background-img="{% static 'images/other_images/bg5.jpg' %}">
 
+    <div class="page-header">
+      <div class="pull-right">
+        <a href="{% url 'bet:create' %}" class="btn btn-primary btn-lg">Create Karma</a>
+      </div>
+    </div>
+
+
     <div class="content-wrapper clearfix wow fadeInDown" data-wow-delay="0.3s">
+
       <div class="col-sm-10 col-md-9 pull-right">
 
           <section class="feature-text">
             <h1>Featured Donation Beneficiaries</h1>
-            <!-- {% featured_recipients %} -->
-            <p>TWILLI Air is a fully-responsive, minimalistic HTML template, designed to be ideal for websites with concise content.</p>
-            <p><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg">find out more</a></p>
-<!--             {% if user.is_authenticated %}
+            {% featured_recipients %}
+            {% if user.is_authenticated %}
               <div class="col-md-6">
                 {% for bet in user.bet_set.all %}
                 <li><a href="{% url 'bet:detail' slug=bet.slug %}">{{ bet }}</a></li>
@@ -24,7 +30,7 @@
               </div>
               {% else %}
                 <b>Login here</b>
-              {% endif %} -->
+              {% endif %}
           </section>
 
       </div><!-- .col-sm-10 -->
