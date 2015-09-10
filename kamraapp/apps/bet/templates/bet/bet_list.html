@@ -1,6 +1,127 @@
 {% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles pipeline %}
 
+
+
 {% block content %}
+  <div ng-app="ProjectListApp">
+    <!-- ============================================================= SECTION – HERO ============================================================= -->
+    <section id="hero" class="dark-bg">
+      <div class="container">
+        <div class="row inner">
+          <div class="col-sm-10 center-block text-center">
+            <header>
+              <h1>Featured Donation Beneficiaries</h1>
+              <p>Magnis modipsae voloratati andigen daepeditem quiate re porem. Laceaque aut labor eictemperum quiae sitiorem rest non restibusaes maio es dem tumquam.</p>
+            </header>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- ============================================================= SECTION – HERO : END ============================================================= -->
+
+    <!-- ============================================================= SECTION – SELECTED WORKS ============================================================= -->
+    <section id="selected-works" class="dark-bg">
+      <div class="portfolio">
+
+        <div class="container inner-bottom-xs">
+          <ul class="filter text-center">
+            <li><a href="#" data-filter="*" class="active">All</a></li>
+            <li><a href="#" data-filter=".identity">Identity</a></li>
+            <li><a href="#" data-filter=".interactive">Interactive</a></li>
+            <li><a href="#" data-filter=".print">Print</a></li>
+            <li><a href="#" data-filter=".photography">Photography</a></li>
+          </ul><!-- /.filter -->
+        </div>
+
+        <ul class="items fullscreen" ng-controller="ProjectListController">
+
+          {% verbatim %}
+            <li class="item thumb identity" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)">
+              <a href="{{ project.url }}">
+                <figure>
+                  <figcaption class="text-overlay">
+                    <div class="info">
+                      <h4>Signwall</h4>
+                      <p>Identity</p>
+                    </div><!-- /.info -->
+                  </figcaption>
+                  <img ng-hide="{{project.picture == ''}}" ng-src="{{ project.picture }}" alt="{{ project.name }}">
+                  <img ng-hide="{{project.picture != ''}}" src="http://placehold.it/350x150" alt="{{ project.name }}">
+                </figure>
+              </a>
+            </li><!-- /.item -->
+          {% endverbatim %}
+
+        </ul><!-- /.items -->
+
+      </div><!-- /.portfolio -->
+    </section>
+    <!-- ============================================================= SECTION – SELECTED WORKS : END ============================================================= -->
+
+    <!-- ============================================================= SECTION – GET IN TOUCH ============================================================= -->
+    <section id="get-in-touch">
+      <div class="container inner">
+        <div class="row">
+          <div class="col-md-8 col-sm-9 center-block text-center">
+            <header>
+              <h1>Want to work with me?</h1>
+              <p>Magnis modipsae que voloratati andigen daepeditem quiate re porem aut labor. Laceaque quiae sitiorem rest non restibusaes maio es dem tumquam.</p>
+            </header>
+            <a href="#" class="btn btn-large">Get in touch</a>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- ============================================================= SECTION – GET IN TOUCH : END ============================================================= -->
+
+    <!-- ============================================================= SECTION – SHARE ============================================================= -->
+    <section id="share" class="light-bg">
+      <div class="row">
+
+        <div class="col-sm-4 reset-padding-right">
+          <a href="#" class="btn-share-md">
+            <p class="name">Facebook</p>
+            <i class="icon-s-facebook"></i>
+            <p class="counter">1080</p>
+          </a>
+        </div><!-- /.col -->
+
+        <div class="col-sm-4 reset-padding">
+          <a href="#" class="btn-share-md">
+            <p class="name">Twitter</p>
+            <i class="icon-s-twitter"></i>
+            <p class="counter">1263</p>
+          </a>
+        </div><!-- /.col -->
+
+        <div class="col-sm-4 reset-padding-left">
+          <a href="#" class="btn-share-md">
+            <p class="name">Google +</p>
+            <i class="icon-s-gplus"></i>
+            <p class="counter">963</p>
+          </a>
+        </div><!-- /.col -->
+
+      </div><!-- /.row -->
+    </section>
+    <!-- ============================================================= SECTION – SHARE : END ============================================================= -->
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <article
     ng-app="ProjectListApp"
     id="intro"
@@ -52,6 +173,9 @@
   </article><!-- .section-wrapper -->
 {% endblock %}
 
+
+{% javascript 'common' %}
+{% javascript 'angular' %}
 {% block javascript_footer %}
   {% javascript 'project-list' %}
 {% endblock %}
