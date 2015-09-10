@@ -45,7 +45,7 @@ app.controller("ProjectListController", [
 
     var init = function() {
       ProjectListService.query().then(function success(data) {
-        // console.log(data)
+        console.log(data)
         $scope.projects = data.results;
         $scope.next_page = data.next;
         $scope.previous_page = data.previous;
