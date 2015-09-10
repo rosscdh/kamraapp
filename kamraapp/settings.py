@@ -91,6 +91,8 @@ TEMPLATES = [
     },
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 WSGI_APPLICATION = 'kamraapp.wsgi.application'
 
 
@@ -156,26 +158,28 @@ BOWER_INSTALLED_APPS = (
 PIPELINE_JS = {
     'common': {
         'source_filenames': {
-            'js/detectmobilebrowser.js',
-            'js/functions.js',
-            'js/initialise-functions.js',
-            'js/jquery.easing.js',
-            'js/jquery.fitvids.js',
-            'js/jquery.lazyload.min.js',
-            'js/jquery.nicescroll.min.js',
-            'js/jquery.scrollstop.min.js',
-            'js/lightbox/js/lightbox.js',
-            'js/owl-carousel/owl.carousel.js',
-            'js/vegas/jquery.vegas.js',
-            'js/wow/wow.min.js',
+            # 'jquery/dist/jquery.js',
+            'js/jquery.easing.1.3.min.js',
+            'js/jquery.form.js',
+            'js/jquery.validate.min.js',
+            'js/bootstrap.min.js',
+            'js/bootstrap-hover-dropdown.min.js',
+            'js/skrollr.min.js',
+            'js/skrollr.stylesheets.min.js',
+            'js/waypoints.min.js',
+            'js/waypoints-sticky.min.js',
+            'js/owl.carousel.min.js',
+            'js/jquery.isotope.min.js',
+            'js/jquery.easytabs.min.js',
+            'js/google.maps.api.v3.js',
+            'js/viewport-units-buggyfill.js',
+            'js/scripts.js',
+            'js/onscroll.js',
         },
         'output_filename': 'dist/js/common.js',
     },
     'angular': {
         'source_filenames': (
-            # support
-            'jquery/dist/jquery.js',
-            'bootstrap/dist/js/bootstrap.js',
             # angular
             'angular/angular.js',
             'angular-ui-router/release/angular-ui-router.js',
@@ -217,15 +221,21 @@ PIPELINE_JS = {
 PIPELINE_CSS = {
     'common': {
         'source_filenames': {
-            'js/vegas/jquery.vegas.css',
-            'js/owl-carousel/owl.carousel.css',
-            'js/owl-carousel/owl.theme.css',
-            'js/owl-carousel/owl.transitions.css',
-            'js/wow/animate.css',
-            'css/font-awesome/css/font-awesome.css',
-            'js/lightbox/css/lightbox.css',
-            'css/fonts/stylesheet.css',
-            'css/styles.css',
+            'css/bootstrap.min.css',
+            'css/main.css',
+            'css/green.css',
+            'css/owl.carousel.css',
+            'css/owl.transitions.css',
+            'css/animate.min.css',
+            'fonts/fontello.css',
+            'css/green.css',
+            'css/blue.css',
+            'css/red.css',
+            'css/pink.css',
+            'css/purple.css',
+            'css/orange.css',
+            'css/navy.css',
+            'css/gray.css',
         },
         'output_filename': 'dist/css/common.css'
     },
