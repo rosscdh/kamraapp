@@ -1,17 +1,175 @@
 {% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles pipeline %}
 
 {% block content %}
-  <article
-    id="intro"
-    class="section-wrapper clearfix"
-    data-custom-background-img="{% static 'images/other_images/bg5.jpg' %}">
 
-    <div class="page-header">
-    <h1>Contact Us</h1>
-    </div>
+<!-- ============================================================= SECTION – HERO ============================================================= -->
+
+<section id="hero" class="light-bg img-bg img-bg-softer" style="background-image: url(assets/images/art/image-background04.jpg);">
+  <div class="container inner">
+    <div class="row">
+      <div class="col-md-8">
+        <header>
+          <h1>Get in touch</h1>
+          <p>Do you want to know more? We’d love to hear from you!</p>
+        </header>
+      </div><!-- /.col -->
+    </div><!-- ./row -->
+  </div><!-- /.container -->
+</section>
+
+<!-- ============================================================= SECTION – HERO : END ============================================================= -->
+
+<div class="container inner">
+  <div class="row">
+
+    <div class="col-md-8 inner-right-md">
+
+      <!-- ============================================================= SECTION – CONTACT FORM ============================================================= -->
+
+      <section id="contact-form">
+
+        <h2>Leave a Message</h2>
+
+        <form id="contactform" class="forms" action="contact.php" method="post" novalidate="novalidate">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" name="name" class="form-control" placeholder="Name (Required)">
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="email" name="email" class="form-control" placeholder="Email (Required)">
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" name="subject" class="form-control" placeholder="Subject">
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-sm-12">
+              <textarea name="message" class="form-control" placeholder="Enter your message ..."></textarea>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <button type="submit" class="btn btn-default btn-submit">Submit message</button>
+
+        </form>
+
+        <div id="response"></div>
+
+      </section>
+
+      <!-- ============================================================= SECTION – CONTACT FORM : END ============================================================= -->
 
 
-  </article><!-- .section-wrapper -->
+      <!-- ============================================================= SECTION – CONTACTS ============================================================= -->
+
+      <section id="contacts" class="inner-top-md inner-bottom-sm">
+
+        <h2>Contacts</h2>
+        <p>Magnis modipsae voloratati andigen daepeditem quiate re aut labor. <br>Laceaque eictemperum quiae sitiorem rest non restibusaes.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h3>KarmaApp</h3>
+            <ul class="contacts">
+              <li><i class="icon-location contact"></i> 84 Street, City, State 24813</li>
+              <li><i class="icon-mobile contact"></i> +00 (123) 456 78 90</li>
+              <li><a href="mailto:info@reen.com"><i class="icon-mail-1 contact"></i> info@reen.com</a></li>
+            </ul><!-- /.contacts -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+
+      </section>
+
+      <!-- ============================================================= SECTION – CONTACTS : END ============================================================= -->
+
+    </div><!-- ./col -->
+
+    <div class="col-md-4">
+
+      <!-- ============================================================= SECTION – CONTACT NAMES ============================================================= -->
+
+      <section id="contact-names" class="light-bg inner-xs inner-left-xs inner-right-xs">
+
+        <h3 class="team-headline sidelines text-center"><span>Contact names</span></h3>
+
+        <div class="row thumbs gap-md text-center">
+
+          <div class="col-sm-6 thumb">
+            <figure class="member">
+
+              <div class="member-image">
+
+                <div class="text-overlay">
+                  <div class="info">
+                    <ul class="social">
+                      <li><a href="#"><i class="icon-s-facebook"></i></a></li>
+                      <li><a href="#"><i class="icon-s-gplus"></i></a></li>
+                      <li><a href="#"><i class="icon-s-twitter"></i></a></li>
+                    </ul><!-- /.social -->
+                  </div><!-- /.info -->
+                </div><!-- /.text-overlay -->
+
+                <img src="assets/images/art/human01.jpg">
+
+              </div><!-- /.member-image -->
+
+              <figcaption class="member-details bordered no-top-border">
+                <h3>
+                  Alfonz
+                  <span>Coconuts</span>
+                </h3>
+              </figcaption>
+
+            </figure>
+          </div><!-- /.col -->
+
+          <div class="col-sm-6 thumb">
+            <figure class="member">
+
+              <div class="member-image">
+
+                <div class="text-overlay">
+                  <div class="info">
+                    <ul class="social">
+                      <li><a href="#"><i class="icon-s-facebook"></i></a></li>
+                      <li><a href="#"><i class="icon-s-gplus"></i></a></li>
+                      <li><a href="#"><i class="icon-s-twitter"></i></a></li>
+                    </ul><!-- /.social -->
+                  </div><!-- /.info -->
+                </div><!-- /.text-overlay -->
+
+                <img src="assets/images/art/human03.jpg">
+
+              </div><!-- /.member-image -->
+
+              <figcaption class="member-details bordered no-top-border">
+                <h3>
+                  Ross
+                  <span>Bananas</span>
+                </h3>
+              </figcaption>
+
+            </figure>
+          </div><!-- /.col -->
+
+        </div><!-- /.row -->
+
+      </section>
+
+      <!-- ============================================================= SECTION – CONTACT NAMES : END ============================================================= -->
+
+    </div><!-- /.col -->
+
+  </div><!-- /.row -->
+</div><!-- /.container -->
+
 {% endblock %}
 
 {% block javascript_footer %}
