@@ -41,7 +41,7 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
         return links
 
     def get_picture(self, obj):
-        default_url = 'http://placehold.it/350x150'
+        default_url = 'https://placeholdit.imgix.net/~text?txtsize=33&txt=%s&w=350&h=175' % obj.name
         try:
             for i in obj.data.get('profile_picture', {}).get('links', []):
                 if i.get('rel') == 'fill_270x141':

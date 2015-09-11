@@ -23,10 +23,14 @@
 
             {% verbatim %}
             <div class="row well" ng-controller="SelectedProjectController">
-              <h3>Selected Worthy Cause</h3>
-              <div class="media">
-                  <div class="media-body"><b class="media-heading">{{ project.name || 'Create a new worthy Cause' }}</b><br/><a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Change</a></div>
-                  <div class="media-right media-middle"><a href=""><img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" /></a></div>
+              <div class="row" ng-cloak>
+                  <div class="col-md-6">
+                    <b class="media-heading">{{ project.name || 'Create a new worthy Cause' }}</b>
+                    <a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Change</a>
+                  </div>
+                  <div class="col-md-3 text-right">
+                    <img width="350" height"175" class="media-object img-rounded" src="{{ project.picture || 'https://placeholdit.imgix.net/~text?txtsize=33&txt=New%20Worthy%20Cause&w=350&h=175' }}" alt="{{ project.name }}" />
+                  </div>
               </div>
             </div>
             {% endverbatim %}
