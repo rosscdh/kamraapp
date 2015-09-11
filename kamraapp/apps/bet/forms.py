@@ -29,9 +29,9 @@ def _get_unique_username(username):
 
 
 class BetFormStart(forms.Form):
-    name = forms.CharField(label='I swear that I will:')
-    description = forms.CharField(label='A more detailed examination of the commitment:', widget=forms.Textarea)
-    amount = forms.FloatField(initial=5.00)
+    name = forms.CharField(label='Your Karma Generating bet', help_text='A short decription of what you will do.')
+    description = forms.CharField(label='Details:', help_text='Describe the details of the commitment', widget=forms.Textarea)
+    amount = forms.FloatField(label='Donation:', initial=5.00, help_text='Proportionate to the karma generated.')
     donation_recipient = forms.IntegerField(required=False, widget=forms.HiddenInput)
 
     class Media:
