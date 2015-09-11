@@ -25,10 +25,14 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     url = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
 
     class Meta:
         model = DonationRecipient
         exclude = ('data',)
+
+    def get_tags(self, obj):
+        return obj.tag.split(',') if obj.tag else []
 
     def get_provider_links(self, obj):
         links = {}
@@ -37,12 +41,14 @@ class DonationRecipientSerializer(serializers.ModelSerializer):
         return links
 
     def get_picture(self, obj):
+        default_url = 'http://placehold.it/350x150'
         try:
             for i in obj.data.get('profile_picture', {}).get('links', []):
                 if i.get('rel') == 'fill_270x141':
                     return i.get('href')
         except:
-            url = None
+            pass
+        return default_url
 
     def get_location(self, obj):
         latitude = obj.data.get('latitude')

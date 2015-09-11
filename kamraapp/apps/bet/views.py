@@ -156,7 +156,7 @@ class HomeView(ListView):
         context = super(HomeView, self).get_context_data(**kwargs)
         context.update({
             'bet_list': BetSerializer(context.get('bet_list', []), many=True).data,
-            'recipient_list': DonationRecipientSerializer(DonationRecipient.objects.all()[:20], many=True).data
+            'recipient_list': DonationRecipientSerializer(DonationRecipient.objects.all()[:18], many=True).data
         })
         return context
 

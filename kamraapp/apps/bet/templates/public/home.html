@@ -34,20 +34,16 @@
 
         <ul class="items fullscreen">
           {% for project in recipient_list %}
-            <li class="item thumb refugees">
+            <li class="item thumb {{ project.tags|join:" " }}">
               <a href="{{ project.url }}">
                 <figure>
                   <figcaption class="text-overlay">
                     <div class="info">
                       <h4>{{ project.name }}</h4>
-                      <p>{{ project.tag | default:"We need a tag or something..." }}</p>
+                      <p>{{ project.tag }}</p>
                     </div><!-- /.info -->
                   </figcaption>
-                  {% if project.picture %}
-                    <img src="{{ project.picture }}" alt="{{ project.name }}">
-                  {% else %}
-                    <img src="http://placehold.it/350x150" alt="{{ project.name }}">
-                  {% endif %}
+                  <img src="{{ project.picture }}" class="img-responsive" style="min-height:150px;" alt="{{ project.name }}">
                 </figure>
               </a>
             </li><!-- /.item -->

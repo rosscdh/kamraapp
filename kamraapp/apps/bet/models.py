@@ -128,7 +128,7 @@ class DonationRecipient(models.Model):
     url = models.URLField()
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-
+    tag = models.CharField(max_length=64,null=True, blank=True)
     weight = models.IntegerField(default=0)
 
     data = JSONField(default={})
