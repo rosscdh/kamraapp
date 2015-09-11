@@ -36,6 +36,10 @@
               {{ wizard.form.as_p }}
               <button class="btn btn-default btn-submit" type="submit" name="">Continue</button>
             </form>
+            <!-- angular directive to calculate this -->
+            <button class="btn btn-primary img-rounded" type="button">
+              <span class="badge"><span style="font-size:5.5em;">25</span>Karma</span>
+            </button>
 
           </section>
           <!-- ============================================================= SECTION – CONTACT FORM : END ============================================================= -->
@@ -74,11 +78,11 @@
 
               <div class="row thumbs gap-md text-center" ng-show="projects" ng-repeat="project in projects track by $index">
               <div class="loading" ng-show="projects.length==0">Please wait...</div>
-                <div class="col-sm-12 thumb" ng-style="{'opacity': 100}">
+                <div class="col-sm-12 thumb" ng-style="{'cursor':'pointer', 'opacity': 100}" ng-click="selectProject(project)">
                   <figure class="member">
                     <div class="member-image">
                       <div class="text-overlay">
-                        <div class="info" ng-click="selectProject(project)">
+                        <div class="info">
                           <h3>Select this Cause</h3>
                         </div><!-- /.info -->
                       </div><!-- /.text-overlay -->
