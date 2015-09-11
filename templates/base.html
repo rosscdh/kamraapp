@@ -106,15 +106,12 @@
               <li><a href="{% url 'bet:about' %}">About</a></li>
               <li><a href="{% url 'bet:contact' %}">Contact</a></li>
 
-              {% if request.user.is_authenticated %}
-                <li class="dropdown pull-right">
+              {% if user.is_authenticated %}
+                <li class="">
                   <a href="#" class="dropdown-toggle js-activated">{{ user.get_full_name|default:user.email }}</a>
-
-                  <ul class="dropdown-menu">
-                    <li><a href="">Profil</a></li>
-                    <li><a href="">Logout</a></li>
-                  </ul>
                 </li>
+                <li><a href="#">Profil</a></li>
+                <li><a href="#">Logout</a></li>
               {% else %}
                 <li class="pull-right"><a href=>Sign in</a></li>
               {% endif %}
