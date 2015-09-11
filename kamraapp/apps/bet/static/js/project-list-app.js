@@ -45,7 +45,7 @@ app.controller("ProjectListController", [
 
     var init = function() {
       ProjectListService.query().then(function success(data) {
-        console.log(data)
+        //console.log(data)
         $scope.projects = data.results;
         $scope.next_page = data.next;
         $scope.previous_page = data.previous;
@@ -69,7 +69,10 @@ app.controller("SelectedProjectController", [
   '$location',
   'ProjectListService',
   function($scope, $q, $filter, $location, ProjectListService) {
+    $scope.karma = $('#id_0-amount').val();
+
     $scope.project = ProjectListService.selected_project();
+
     $scope.$on('project:updated', function(event, project) {
       $scope.project = project;
       $('#id_0-donation_recipient').val([project.id]);
@@ -81,6 +84,15 @@ app.controller("SelectedProjectController", [
   }
 ]) // end controller
 
+app.directive('karmaCounter', function () {
+  return {
+    restrict: 'C',
+    template: '<button class="btn btn-primary img-rounded" type="button"><span class="badge"><span style="font-size:5.5em;">{{karma}}</span>Karma</span></button>',
+    link: function (scope, element, attrs) {
+      //scope.karma = attrs.amount;
+    }
+  };
+});
 
 app.factory('ProjectListService', [
   '$q',
