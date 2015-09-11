@@ -62,8 +62,8 @@
             <section id="contact-names" class="light-bg inner-xs inner-left-xs inner-right-xs">
               <h3 class="team-headline sidelines text-center"><span>Top Projects</span></h3>
 
-              <div class="loading" ng-show="projects.length==0">Please wait...</div>
               <div class="row thumbs gap-md text-center" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)">
+              <div class="loading" ng-show="projects.length==0">Please wait...</div>
                 <div class="col-sm-12 thumb" ng-style="{'opacity': 100}">
                   <figure class="member">
                     <div class="member-image">

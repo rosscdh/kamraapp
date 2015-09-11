@@ -9,7 +9,7 @@ from formtools.wizard.views import SessionWizardView
 
 from .models import Bet, DonationRecipient
 from .forms import BetFormStart, BetFormDonationRecipient, BetFormUserInfo, ShareForm
-from .api.serializers import DonationRecipientSerializer
+from .api.serializers import DonationRecipientSerializer, BetSerializer
 
 
 class BetListView(ListView):
@@ -145,3 +145,18 @@ class CounterBetFormView(BetFormView):
         initial = super(CounterBetFormView, self).get_initial()
         initial.update({'parent_bet': self.get_object()})
         return initial
+
+
+class HomeView(ListView):
+    model = Bet
+    paginate_by = 5
+    template_name = "public/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context.update({
+            'bet_list': BetSerializer(context.get('bet_list', []), many=True).data,
+            'recipient_list': DonationRecipientSerializer(DonationRecipient.objects.all()[:20], many=True).data
+        })
+        return context
+

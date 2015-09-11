@@ -1,7 +1,6 @@
 {% extends 'bet/base.html' %}{% load featured_html %}{% load staticfiles pipeline %}
 
 
-
 {% block content %}
   <div ng-app="ProjectListApp">
     <!-- ============================================================= SECTION – HERO ============================================================= -->
@@ -33,30 +32,48 @@
           </ul><!-- /.filter -->
         </div>
 
-        <ul class="items fullscreen" ng-controller="ProjectListController">
-
-          {% verbatim %}
-            <li class="item thumb refugees" ng-show="projects" ng-repeat="project in projects track by $index">
+        <ul class="items fullscreen">
+          {% for project in recipient_list %}
+            <li class="item thumb refugees">
               <a href="{{ project.url }}">
                 <figure>
                   <figcaption class="text-overlay">
                     <div class="info">
                       <h4>{{ project.name }}</h4>
-                      <p>{{ project.tag || "We need a tag or something..." }}</p>
+                      <p>{{ project.tag | default:"We need a tag or something..." }}</p>
                     </div><!-- /.info -->
                   </figcaption>
-                  <img ng-hide="{{project.picture == ''}}" ng-src="{{ project.picture }}" alt="{{ project.name }}">
-                  <img ng-hide="{{project.picture != ''}}" src="http://placehold.it/350x150" alt="{{ project.name }}">
+                  {% if project.picture %}
+                    <img src="{{ project.picture }}" alt="{{ project.name }}">
+                  {% else %}
+                    <img src="http://placehold.it/350x150" alt="{{ project.name }}">
+                  {% endif %}
                 </figure>
               </a>
             </li><!-- /.item -->
-          {% endverbatim %}
-
+          {% endfor %}
         </ul><!-- /.items -->
 
       </div><!-- /.portfolio -->
     </section>
     <!-- ============================================================= SECTION – SELECTED WORKS : END ============================================================= -->
+
+    <!-- ============================================================= SECTION – GET IN TOUCH ============================================================= -->
+    <br />
+    <section id="get-in-touch" class="inner-bottom">
+      <div class="container inner light-bg">
+        <div class="row">
+          <div class="col-md-8 col-sm-9 center-block text-center">
+            <header>
+              <h1>Want to earn some karma points?</h1>
+              <p>You can challenge yourself and your friends and donate the betting proceeds.</p>
+            </header>
+            <a href="{% url 'bet:create' %}" class="btn btn-large">Get in touch</a>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- ============================================================= SECTION – GET IN TOUCH : END ============================================================= -->
 
     <!-- ============================================================= SECTION – REASONS ============================================================= -->
     <section id="reasons">
@@ -74,22 +91,28 @@
             {% if object_list %}
               <div class="tabs tabs-reasons tabs-circle-top tab-container">
                 <ul class="etabs text-center">
-                  {% for bet in object_list %}
+                  {% for bet in bet_list %}
                     <li class="tab"><a href="#{{ bet.slug }}"><div>{{ forloop.counter }}</div>{{ bet.name }}</a></li>
                   {% endfor %}
                 </ul><!-- /.etabs -->
 
                 <div class="panel-container">
-                  {% for bet in object_list %}
+                  {% for bet in bet_list %}
                     <div class="tab-content" id="{{ bet.slug }}">
                       <div class="row">
                         <div class="col-md-5 col-md-push-5 col-md-offset-1 col-sm-6 col-sm-push-6 inner-left-xs">
-                          <figure><img src="http://placehold.it/300x250" alt=""></figure>
+                          <figure>
+                            {% if bet.recipients.picture %}
+                              <img src="{{ bet.recipients.picture }}" alt="{{ bet.recipients.name }}">
+                            {% else %}
+                              <img src="http://placehold.it/350x150" alt="{{ bet.recipients.name }}">
+                            {% endif %}
+                          </figure>
                         </div><!-- /.col -->
 
                         <div class="col-md-5 col-md-pull-5 col-sm-6 col-sm-pull-6 inner-top-xs inner-right-xs">
-                          <h3>Function</h3>
-                          <p>Magnis modipsae que lib voloratati andigen daepedor quiate ut reporemni aut labor. Laceaque quiae sitiorem ut restibusaes es tumquam core posae volor remped modis volor. Doloreiur qui commolu ptatemp dolupta orem retibusam emnis et consent accullignis lomnus.</p>
+                          <h3>{{ bet.name }}</h3>
+                          <p>{{ bet.description }}</p>
                         </div><!-- /.col -->
 
                       </div><!-- /.row -->
@@ -104,22 +127,6 @@
       </div><!-- /.container -->
     </section>
     <!-- ============================================================= SECTION – REASONS : END ============================================================= -->
-
-    <!-- ============================================================= SECTION – GET IN TOUCH ============================================================= -->
-    <section id="get-in-touch" class="inner-bottom">
-      <div class="container inner light-bg">
-        <div class="row">
-          <div class="col-md-8 col-sm-9 center-block text-center">
-            <header>
-              <h1>Want to earn some karma points?</h1>
-              <p>You can challenge yourself and your friends and donate the betting proceeds.</p>
-            </header>
-            <a href="{% url 'bet:create' %}" class="btn btn-large">Get in touch</a>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section>
-    <!-- ============================================================= SECTION – GET IN TOUCH : END ============================================================= -->
 
     <!-- ============================================================= SECTION – SHARE ============================================================= -->
     <section id="share" class="light-bg">

@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, DetailView
 
 from rest_framework import routers
 
-from .views import BetListView, BetDetailView, BetCreateView, BetFormView, CloneBetFormView, CounterBetFormView
+from .views import HomeView, BetListView, BetDetailView, BetCreateView, BetFormView, CloneBetFormView, CounterBetFormView
 from .api.views import BetViewset, DonationRecipientViewset
 
 from .models import DonationRecipient
@@ -17,7 +17,7 @@ router.register(r'donation-recipients', DonationRecipientViewset, base_name='don
 
 
 urlpatterns = patterns('',
-    url(r'^$', BetListView.as_view(), name='list'),
+    url(r'^$', HomeView.as_view(), name='home'),
 
     url(r'^contact/$', TemplateView.as_view(template_name='public/contact.html'), name='contact'),
 

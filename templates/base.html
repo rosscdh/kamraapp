@@ -74,7 +74,7 @@
 
           <!-- ============================================================= LOGO MOBILE ============================================================= -->
 
-          <a class="navbar-brand" href="/">
+          <a class="navbar-brand" href="{% url 'bet:home' %}">
             <img src="{% static 'images/karma.png' %}" class="logo" alt="">
           </a>
 
@@ -91,7 +91,7 @@
 
             <!-- ============================================================= LOGO ============================================================= -->
 
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="{% url 'bet:home' %}">
               <img src="{% static 'images/karma.png' %}" class="logo" alt="">
             </a>
 
@@ -102,16 +102,22 @@
 
 
             <ul class="nav navbar-nav">
-              <li><a href="{% url 'bet:list' %}">get karma</a></li>
+              <li><a href="{% url 'bet:create' %}">get karma</a></li>
               <li><a href="{% url 'bet:contact' %}">Contact</a></li>
+
               {% if request.user.is_authenticated %}
                 <li class="dropdown pull-right">
-                  <li><a href=>{{ user.get_full_name|default:user.email }}</a></li>
-                  <li><a href=>Logout</a></li>
-                </li>>
+                  <a href="#" class="dropdown-toggle js-activated">{{ user.get_full_name|default:user.email }}</a>
+
+                  <ul class="dropdown-menu">
+                    <li><a href="">Profil</a></li>
+                    <li><a href="">Logout</a></li>
+                  </ul>
+                </li>
               {% else %}
                 <li class="pull-right"><a href=>Sign in</a></li>
               {% endif %}
+
               <li class="dropdown pull-right searchbox">
                 <a href="#" class="dropdown-toggle js-activated"><i class="icon-search"></i></a>
                 <div class="dropdown-menu">
