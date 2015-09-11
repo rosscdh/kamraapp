@@ -6,24 +6,15 @@
 
 {% block content %}
   <div ng-app="ProjectListApp">
-    <!-- ============================================================= SECTION – HERO ============================================================= -->
-    <section id="hero" class="light-bg img-bg img-bg-softer" style="background-image: url({% static 'images/art/image-background04.jpg' %});">
-      <div class="container inner">
-        <div class="row">
-          <div class="col-md-8">
-            <header>
-              <h1>Create your own bet</h1>
-              <p>Let your friends challenge you!</p>
-            </header>
-          </div><!-- /.col -->
-        </div><!-- ./row -->
-      </div><!-- /.container -->
-    </section>
-    <!-- ============================================================= SECTION – HERO : END ============================================================= -->
-
     <div class="container inner">
       <div class="row">
         <div class="col-md-8 inner-right-md">
+
+          <section id="hero">
+          <header>
+            <h1>Generate Karma <br><small>a creative and digital Agency</small></h1>
+          </header>
+          </section>
 
           <!-- ============================================================= SECTION – CONTACT FORM ============================================================= -->
           <section id="contact-form">
@@ -33,6 +24,7 @@
               {{ wizard.form.as_p }}
               <button class="btn btn-default btn-submit" type="submit" name="">Continue</button>
             </form>
+            <div ng-controller="SelectedProjectController"></div>
           </section>
           <!-- ============================================================= SECTION – CONTACT FORM : END ============================================================= -->
 
@@ -59,21 +51,23 @@
         <div class="col-md-4" ng-controller="ProjectListController">
           <!-- ============================================================= SECTION – CONTACT NAMES ============================================================= -->
           {% verbatim %}
-            <section id="contact-names" class="light-bg inner-xs inner-left-xs inner-right-xs">
+            <section ng-cloak id="contact-names" class="light-bg inner-xs inner-left-xs inner-right-xs">
               <h3 class="team-headline sidelines text-center"><span>Top Projects</span></h3>
 
-              <div class="row thumbs gap-md text-center" ng-show="projects" ng-repeat="project in projects track by $index" ng-click="selectProject(project)">
+              <div class="text-center row">
+                <a class="btn btn-default" ng-show="previous_page" href="javascript:false;" ng-click="go(previous_page)">Previous</a>
+                <a class="btn btn-default" ng-show="next_page" href="javascript:false;" ng-click="go(next_page)">Next</a>
+              </div>
+
+
+              <div class="row thumbs gap-md text-center" ng-show="projects" ng-repeat="project in projects track by $index">
               <div class="loading" ng-show="projects.length==0">Please wait...</div>
                 <div class="col-sm-12 thumb" ng-style="{'opacity': 100}">
                   <figure class="member">
                     <div class="member-image">
                       <div class="text-overlay">
-                        <div class="info">
-                          <ul class="social">
-                            <li><a href="#"><i class="icon-s-facebook"></i></a></li>
-                            <li><a href="#"><i class="icon-s-gplus"></i></a></li>
-                            <li><a href="#"><i class="icon-s-twitter"></i></a></li>
-                          </ul><!-- /.social -->
+                        <div class="info" ng-click="selectProject(project)">
+                          <h3>Select this Cause</h3>
                         </div><!-- /.info -->
                       </div><!-- /.text-overlay -->
 

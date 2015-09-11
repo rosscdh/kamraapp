@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>{% block title %}KarmApp - do yourself good{% endblock %}</title>
+  <title>{% block title %}KarmApp - do good, get karma{% endblock %}</title>
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}">
@@ -102,7 +102,8 @@
 
 
             <ul class="nav navbar-nav">
-              <li><a href="{% url 'bet:create' %}">get karma</a></li>
+              <li><a href="{% url 'bet:create' %}">Generate Karma</a></li>
+              <li><a href="{% url 'bet:about' %}">About</a></li>
               <li><a href="{% url 'bet:contact' %}">Contact</a></li>
 
               {% if request.user.is_authenticated %}

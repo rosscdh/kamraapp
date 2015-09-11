@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
     url(r'^contact/$', TemplateView.as_view(template_name='public/contact.html'), name='contact'),
+    url(r'^about/$', TemplateView.as_view(template_name='public/about.html'), name='about'),
 
     url(r'^k/create/$', BetCreateView.as_view(), name='create'),
     url(r'^k/(?P<slug>[\w-]+)/$', BetDetailView.as_view(), name='detail'),
