@@ -12,19 +12,31 @@
 
           <section id="hero">
           <header>
-            <h1>Generate Karma <br><small>a creative and digital Agency</small></h1>
+            <h1>Generate Karma</h1>
+            <small>Select one of our Worthy Causes, or create your own</small>
           </header>
           </section>
 
           <!-- ============================================================= SECTION – CONTACT FORM ============================================================= -->
           <section id="contact-form">
             <h2>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h2>
+
+            {% verbatim %}
+            <div class="row well" ng-controller="SelectedProjectController">
+              <h3>Selected Worthy Cause</h3>
+              <div class="media">
+                  <div class="media-body"><b class="media-heading">{{ project.name || 'Create a new worthy Cause' }}</b><br/><a href="javascript:false;" ng-show="project" ng-click="clearSelectedProject()" class="btn btn-warning">Change</a></div>
+                  <div class="media-right media-middle"><a href=""><img class="media-object img-rounded" src="{{ project.picture }}" alt="{{ project.name }}" /></a></div>
+              </div>
+            </div>
+            {% endverbatim %}
+
             <form name="" id="" action="{{ form.action }}" method="POST">{% csrf_token %}
               {{ wizard.management_form }}
               {{ wizard.form.as_p }}
               <button class="btn btn-default btn-submit" type="submit" name="">Continue</button>
             </form>
-            <div ng-controller="SelectedProjectController"></div>
+
           </section>
           <!-- ============================================================= SECTION – CONTACT FORM : END ============================================================= -->
 
