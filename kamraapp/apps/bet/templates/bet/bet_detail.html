@@ -12,106 +12,112 @@
 {% endblock %}
 
 {% block content %}
-<div ng-app="ProjectDetailApp">
-
-  <div class="row text-left">
-    {% social_share url=request.build_absolute_uri|escape %}
-  </div>
-
-  <hr/>
-
-  {% if user == object.user %}
+<div class="container inner" ng-app="ProjectDetailApp">
   <div class="row">
-    <a href="{% url 'bet:edit' slug=bet.slug %}" class="btn btn-primary pull-right">edit</a>
-  </div>
-  {% endif %}
 
-  <div class="row">
-    <div class="col-md-6">
-      {% if object.parent_bet %}
-      <p>Clone of <a href="{{ object.parent_bet.get_absolute_url }}">{{ object.parent_bet.name }} by {{ object.parent_bet.user.first_name }}</a></p>
-      {% endif %}
-      I, known as "{{ bet.user.first_name }}" swear I will try to "{{ bet.name }}"
-      <p>{{ bet.description }}</p>
-      {% if user != object.user and not view.user_has_cloned_bet %}
-      <a href="{% url 'bet:clone' slug=object.slug %}" class="btn btn-warning">I also want to do this bet</a>
-      {% endif %}
-    </div>
+    <div class="col-md-12">
 
-    <div class="col-md-6">
-      <h2>Donation Recipient</h2>
-      {% for recipient in donation_recipients %}
-      <div class="media">
-        <div class="media-top">
-          <a href="#"><img class="media-object img-rounded" src="{{ recipient.picture }}" alt="{{ recipient.name }}" /></a>
+
+      <div class="row text-left">
+        {% social_share url=request.build_absolute_uri|escape %}
+      </div>
+
+      <hr/>
+
+      {% if user == object.user %}
+      <div class="row">
+        <a href="{% url 'bet:edit' slug=bet.slug %}" class="btn btn-primary pull-right">edit</a>
+      </div>
+      {% endif %}
+
+      <div class="row">
+        <div class="col-md-6">
+          {% if object.parent_bet %}
+          <p>Clone of <a href="{{ object.parent_bet.get_absolute_url }}">{{ object.parent_bet.name }} by {{ object.parent_bet.user.first_name }}</a></p>
+          {% endif %}
+          I, known as "{{ bet.user.first_name }}" swear I will try to "{{ bet.name }}"
+          <p>{{ bet.description }}</p>
+          {% if user != object.user and not view.user_has_cloned_bet %}
+          <a href="{% url 'bet:clone' slug=object.slug %}" class="btn btn-warning">I also want to do this bet</a>
+          {% endif %}
         </div>
-        <div class="media-body">
-            <b class="media-heading">{{ recipient.name }}</b>
-            <div>{{ recipient.description|safe }}</div>
-            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-warning">More Info</a>
-            <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-success">Donate now</a>
+
+        <div class="col-md-6">
+          <h2>Donation Recipient</h2>
+          {% for recipient in donation_recipients %}
+          <div class="media">
+            <div class="media-top">
+              <a href="#"><img class="media-object img-rounded" src="{{ recipient.picture }}" alt="{{ recipient.name }}" /></a>
+            </div>
+            <div class="media-body">
+                <b class="media-heading">{{ recipient.name }}</b>
+                <div>{{ recipient.description|safe }}</div>
+                <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-warning">More Info</a>
+                <a href="{{ recipient.url }}" target="_NEW" class="btn btn-sm btn-success">Donate now</a>
+            </div>
+          </div>
+          {% endfor %}
         </div>
       </div>
-      {% endfor %}
-    </div>
-  </div>
 
-  <hr/>
+      <hr/>
 
-  <div class="row">
+      <div class="row">
 
-    <div class="col-md-4">
-      <ul class="">
-      <li><b>Primary:</b> {{ bet.amount }}</li>
-      <li><b>For:</b></li>
-      <li><b>Against:</b></li>
-      <li><b>Donation Total:</b></li>
-      <li><b>Karma Total:</b></li>
-      <ul>
-    </div>
+        <div class="col-md-4">
+          <ul class="">
+          <li><b>Primary:</b> {{ bet.amount }}</li>
+          <li><b>For:</b></li>
+          <li><b>Against:</b></li>
+          <li><b>Donation Total:</b></li>
+          <li><b>Karma Total:</b></li>
+          <ul>
+        </div>
 
-    <div class="col-md-4">
-      {% if user != object.user %}
-      {% verbatim %}
-      <span ng-controller="BetForController">
-      <a href="" ng-show="can_bet " ng-click="bet_for()" class="btn btn-success">Bet for</a><br/>
-      {{ bets.total }}
-      <ul>
-        <li ng-repeat="bet in data.bets track by $index">
-          {{ bet.name }}
-        </li>
-      </ul>
-      </span>
-      {% endverbatim %}
+        <div class="col-md-4">
+          {% if user != object.user %}
+          {% verbatim %}
+          <span ng-controller="BetForController">
+          <a href="" ng-show="can_bet " ng-click="bet_for()" class="btn btn-success">Bet for</a><br/>
+          {{ bets.total }}
+          <ul>
+            <li ng-repeat="bet in data.bets track by $index">
+              {{ bet.name }}
+            </li>
+          </ul>
+          </span>
+          {% endverbatim %}
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          {% if user != object.user %}
+          {% verbatim %}
+          <span ng-controller="BetAgainstController">
+          <a href="" ng-show="can_bet " ng-click="bet_against()" class="btn btn-danger">Bet Against</a><br/>
+          {{ bets.total }}
+          <ul>
+            <li ng-repeat="bet in data.bets track by $index">
+              {{ bet.name }}
+            </li>
+          </ul>
+          </span>
+          {% endverbatim %}
+          {% endif %}
+        </div>
+
+      </div>
+      {% if bet.bet_set.all %}
+      <div class="row">
+        <h3>Others doing this bet</h3>
+        <ol>
+        {% for other_bet in bet.bet_set.all %}
+        <li><a href="{{ other_bet.get_absolute_url }}">{{ other_bet.name }}</a></li>
+        {% endfor %}
+        </ol>
+      </div>
       {% endif %}
     </div>
-    <div class="col-md-4">
-      {% if user != object.user %}
-      {% verbatim %}
-      <span ng-controller="BetAgainstController">
-      <a href="" ng-show="can_bet " ng-click="bet_against()" class="btn btn-danger">Bet Against</a><br/>
-      {{ bets.total }}
-      <ul>
-        <li ng-repeat="bet in data.bets track by $index">
-          {{ bet.name }}
-        </li>
-      </ul>
-      </span>
-      {% endverbatim %}
-      {% endif %}
-    </div>
-
   </div>
-  {% if bet.bet_set.all %}
-  <div class="row">
-    <h3>Others doing this bet</h3>
-    <ol>
-    {% for other_bet in bet.bet_set.all %}
-    <li><a href="{{ other_bet.get_absolute_url }}">{{ other_bet.name }}</a></li>
-    {% endfor %}
-    </ol>
-  </div>
-  {% endif %}
 </div>
 {% endblock %}
 
